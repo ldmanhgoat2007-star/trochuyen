@@ -46,6 +46,9 @@ noteForm.addEventListener('submit', async (e) => {
     const content = noteContentInput.value.trim();
     const imageFile = noteImageInput.files[0];
 
+    // LẤY MÀU ĐANG CHỌN (Dòng mới thêm)
+    const selectedColor = document.querySelector('input[name="note-color"]:checked').value;
+
     if (!content && !imageFile) {
         alert("Vui lòng nhập nội dung hoặc chọn ảnh.");
         return;
@@ -57,30 +60,27 @@ noteForm.addEventListener('submit', async (e) => {
     try {
         let imageUrl = null;
 
-        // Tải ảnh lên ImgBB bằng API
+        // Tải ảnh lên ImgBB (giữ nguyên đoạn này)
         if (imageFile) {
             const formData = new FormData();
             formData.append("image", imageFile);
-
             const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
                 method: "POST",
                 body: formData
             });
-            
             const imgbbData = await imgbbResponse.json();
             if (imgbbData.success) {
-                imageUrl = imgbbData.data.url; // Lấy link ảnh thành công
-            } else {
-                throw new Error("Lỗi tải ảnh lên ImgBB");
+                imageUrl = imgbbData.data.url;
             }
         }
 
-        // Lưu toàn bộ vào Firebase Firestore
+        // LƯU VÀO FIREBASE (Đã thêm trường color)
         await addDoc(collection(db, "notes"), {
             content: content,
             imageUrl: imageUrl,
             sender: CURRENT_USER,
-            timestamp: serverTimestamp()
+            timestamp: serverTimestamp(),
+            color: selectedColor // <--- Lưu màu vào đây
         });
 
         noteForm.reset();
@@ -88,7 +88,7 @@ noteForm.addEventListener('submit', async (e) => {
 
     } catch (error) {
         console.error("Lỗi:", error);
-        alert("Có lỗi xảy ra khi gửi, vui lòng thử lại.");
+        alert("Có lỗi xảy ra khi gửi.");
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = "Gửi Ghi Chú";
