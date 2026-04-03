@@ -1,3 +1,7 @@
+/* Phép tàng hình bắt buộc phải có cho tính năng Bật/Tắt */
+.hidden {
+    display: none !important;
+}
 /* === Reset cơ bản === */
 * {
     box-sizing: border-box;
