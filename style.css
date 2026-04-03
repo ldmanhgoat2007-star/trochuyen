@@ -302,6 +302,44 @@ footer {
     margin-top: 15px;
     gap: 15px;
 }
+/* Giao diện nút bấm hình tròn */
+.arrow-btn {
+    background-color: #fff; /* Nền trắng */
+    color: #ff6b81;         /* Màu mũi tên hồng */
+    border: 2px solid #ff6b81;
+    border-radius: 50%;     /* Làm tròn xoe */
+    width: 45px;            
+    height: 45px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+/* Hiệu ứng khi di chuột vào nút */
+.arrow-btn:hover {
+    background-color: #ff6b81;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+}
+
+/* Hiệu ứng xoay của Mũi tên */
+#arrow-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.4s ease; /* Xoay mượt mà trong 0.4 giây */
+}
+
+/* Các trạng thái của mũi tên */
+.arrow-up {
+    transform: rotate(0deg); /* Khi form ẩn: Mũi tên hướng LÊN (theo ý bạn) */
+}
+
+.arrow-down {
+    transform: rotate(180deg); /* Khi form hiện: Lật ngược 180 độ thành hướng XUỐNG */
+}
 
 .color-picker {
     margin-bottom: 0;
