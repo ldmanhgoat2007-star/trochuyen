@@ -96,24 +96,39 @@ noteForm.addEventListener('submit', async (e) => {
     }
 });
 
-// === 6. ĐỌC DỮ LIỆU REAL-TIME ===
-function renderNote(data) {
+// === 6. ĐỌC VÀ XÓA DỮ LIỆU REAL-TIME ===
+// Hàm vẽ (render) một tờ giấy nhớ lên màn hình
+function renderNote(docSnapshot) {
+    const data = docSnapshot.data();
+    const noteId = docSnapshot.id; // Lấy ID của ghi chú để phục vụ việc xóa
+
     const noteDiv = document.createElement('div');
     noteDiv.className = 'note';
 
+    // Xử lý thời gian
     let timeString = "...";
     if (data.timestamp) {
         const date = data.timestamp.toDate();
         timeString = date.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + ' ' + date.toLocaleDateString('vi-VN');
     }
 
+    // Nút xóa (Chỉ hiện nếu người đang xem chính là người gửi)
+    let deleteBtnHtml = '';
+    if (data.sender === CURRENT_USER) {
+        deleteBtnHtml = `<button class="delete-btn" data-id="${noteId}">Xóa</button>`;
+    }
+
     let noteHtml = `<div class="note-content">${data.content}</div>`;
     if (data.imageUrl) {
         noteHtml += `<img src="${data.imageUrl}" alt="Ảnh ghi chú" class="note-image">`;
     }
+    
     noteHtml += `
         <div class="note-meta">
-            <span class="note-sender">${data.sender}</span>
+            <div>
+                <span class="note-sender">${data.sender}</span>
+                ${deleteBtnHtml} 
+            </div>
             <span class="note-time">${timeString}</span>
         </div>
     `;
@@ -122,6 +137,7 @@ function renderNote(data) {
     notesContainer.prepend(noteDiv);
 }
 
+// Hàm nghe thay đổi từ Firestore
 function listenToNotes() {
     const q = query(collection(db, "notes"), orderBy("timestamp", "asc"));
     onSnapshot(q, (snapshot) => {
@@ -130,11 +146,32 @@ function listenToNotes() {
             notesContainer.innerHTML = '<div class="loading">Bảng tin đang trống. Hãy viết điều gì đó!</div>';
             return;
         }
+        // Truyền toàn bộ doc (chứa cả ID và dữ liệu) vào hàm render
         snapshot.forEach((doc) => {
-            renderNote(doc.data());
+            renderNote(doc); 
         });
     });
 }
 
+// Lắng nghe sự kiện click để Xóa (Áp dụng kỹ thuật Event Delegation)
+notesContainer.addEventListener('click', async (e) => {
+    // Nếu phần tử bị click có chứa class 'delete-btn'
+    if (e.target.classList.contains('delete-btn')) {
+        const noteId = e.target.getAttribute('data-id');
+        
+        // Hiển thị hộp thoại xác nhận
+        if(confirm("Bạn có chắc chắn muốn xóa mẩu giấy nhớ này không?")) {
+            try {
+                // Gọi lệnh xóa trên Firebase
+                await deleteDoc(doc(db, "notes", noteId));
+            } catch (error) {
+                console.error("Lỗi khi xóa:", error);
+                alert("Không thể xóa, vui lòng thử lại.");
+            }
+        }
+    }
+});
+
+// Bắt đầu nghe ngay khi trang web tải xong
 listenToNotes();
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
