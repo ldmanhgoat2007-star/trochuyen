@@ -98,23 +98,14 @@ noteForm.addEventListener('submit', async (e) => {
 // === 6. ĐỌC VÀ XÓA DỮ LIỆU REAL-TIME ===
 // Hàm vẽ (render) một tờ giấy nhớ lên màn hình
 function renderNote(docSnapshot) {
-    function renderNote(docSnapshot) {
-    const data = docSnapshot.data();
-    const noteId = docSnapshot.id;
-
-    const noteDiv = document.createElement('div');
-    noteDiv.className = 'note';
-    
-    // THÊM DÒNG NÀY:
-    noteDiv.style.backgroundColor = data.color || "#fff9c4"; 
-    
-    // ... các đoạn code vẽ nội dung phía dưới giữ nguyên ...
-}
     const data = docSnapshot.data();
     const noteId = docSnapshot.id; // Lấy ID của ghi chú để phục vụ việc xóa
 
     const noteDiv = document.createElement('div');
     noteDiv.className = 'note';
+    
+    // Áp dụng màu nền (Nếu không có màu thì mặc định màu vàng)
+    noteDiv.style.backgroundColor = data.color || "#fff9c4"; 
 
     // Xử lý thời gian
     let timeString = "...";
