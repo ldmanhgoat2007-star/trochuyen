@@ -37,33 +37,29 @@ header p {
 
 /* === Khu vực ghi chú (Notes Container) === */
 #notes-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-    padding: 20px;
+    /* Chia bảng thành các cột (ví dụ 2 cột trên điện thoại, 3 cột trên máy tính) */
+    column-count: 2; 
+    column-gap: 15px;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.loading {
-    grid-column: 1 / -1;
-    text-align: center;
-    color: #999;
-    padding: 50px;
+.note {
+    /* Quan trọng: Ngăn không cho mẩu giấy bị cắt đôi khi chuyển cột */
+    break-inside: avoid; 
+    display: inline-block; /* Chuyển về inline-block để Masonry hoạt động chuẩn */
+    width: 100%;
+    margin-bottom: 15px; /* Khoảng cách dưới mỗi ô */
+    
+    /* Giữ nguyên các code style khác của bạn (border-radius, padding...) */
 }
 
-/* === Phong cách Giấy nhớ (Sticky Note) === */
-.note {
-    background-color: #fff9c4; /* Vàng pastel mặc định */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    position: relative;
-    transition: transform 0.2s, box-shadow 0.2s;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
+/* Trên màn hình máy tính MSI của Mạnh (màn hình rộng), cho hiện 3 cột cho đẹp */
+@media (min-width: 768px) {
+    #notes-container {
+        column-count: 3;
+    }
 }
 
 .note:hover {
