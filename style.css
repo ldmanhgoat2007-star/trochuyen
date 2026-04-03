@@ -306,3 +306,20 @@ footer {
     text-align: center;
 }
 
+#note-form {
+    max-width: 800px; 
+    margin: 0 auto;   
+}
+
+.form-bottom-row {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;            
+    flex-wrap: wrap;                
+    margin-top: 15px;
+    gap: 15px;
+}
+
+.color-picker {
+    margin-bottom: 0;
+}
