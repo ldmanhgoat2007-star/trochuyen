@@ -1,6 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 // === 1. CẤU HÌNH FIREBASE (Chỉ dùng Firestore) ===
 const firebaseConfig = {
   // DÁN MÃ FIREBASE CONFIG CỦA BẠN VÀO ĐÂY
@@ -174,4 +173,3 @@ notesContainer.addEventListener('click', async (e) => {
 
 // Bắt đầu nghe ngay khi trang web tải xong
 listenToNotes();
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
