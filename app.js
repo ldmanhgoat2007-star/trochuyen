@@ -176,3 +176,23 @@ notesContainer.addEventListener('click', async (e) => {
 
 // Bắt đầu nghe ngay khi trang web tải xong
 listenToNotes();
+// === LOGIC ẨN/HIỆN KHUNG VIẾT GHI CHÚ VỚI NÚT MŨI TÊN ===
+const toggleFormBtn = document.getElementById('toggle-form-btn');
+const noteFormContainer = document.getElementById('note-form'); 
+const arrowIcon = document.getElementById('arrow-icon'); // Lấy cái icon ra để xoay
+
+toggleFormBtn.addEventListener('click', () => {
+    // Bật/tắt việc giấu form
+    noteFormContainer.classList.toggle('hidden');
+    
+    // Đảo chiều mũi tên
+    if (noteFormContainer.classList.contains('hidden')) {
+        // Nếu form đang ẩn -> Mũi tên hướng Lên
+        arrowIcon.classList.remove('arrow-down');
+        arrowIcon.classList.add('arrow-up');
+    } else {
+        // Nếu form đang hiện -> Mũi tên hướng Xuống
+        arrowIcon.classList.remove('arrow-up');
+        arrowIcon.classList.add('arrow-down');
+    }
+});
