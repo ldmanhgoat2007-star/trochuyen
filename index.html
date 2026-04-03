@@ -18,35 +18,32 @@
         <div class="loading">Đang tải ghi chú...</div>
     </main>
 
-    <footer>
+<footer>
+    <form id="note-form">
+        <div class="form-group">
+            <textarea id="note-content" placeholder="Viết điều gì đó cho người kia..." required></textarea>
+        </div>
+        
+        <div class="form-actions">
+            <label for="note-image" class="custom-file-upload">
+                <img src="https://img.icons8.com/material-outlined/24/ffffff/image.png" alt="Icon ảnh"/>
+                Chèn ảnh
+            </label>
+            <input type="file" id="note-image" accept="image/*">
+            <span id="file-name-display"></span>
+        </div>
 
-<form id="note-form" class="hidden">
+        <div class="color-picker">
+            <label><input type="radio" name="note-color" value="#fff9c4" checked> <span style="background:#fff9c4"></span></label>
+            <label><input type="radio" name="note-color" value="#ffcce6"> <span style="background:#ffcce6"></span></label>
+            <label><input type="radio" name="note-color" value="#cce6ff"> <span style="background:#cce6ff"></span></label>
+            <label><input type="radio" name="note-color" value="#e6ffcc"> <span style="background:#e6ffcc"></span></label>
+        </div>
+
+        <button type="submit" id="submit-btn">Gửi Ghi Chú</button>
+
     </form>
-        <form id="note-form">
-            <div class="form-group">
-                <textarea id="note-content" placeholder="Viết điều gì đó cho người kia..." required></textarea>
-            </div>
-            <div class="form-actions">
-                <label for="note-image" class="custom-file-upload">
-                    <img src="https://img.icons8.com/material-outlined/24/ffffff/image.png" alt="Icon ảnh"/>
-                    Chèn ảnh
-                </label>
-                <input type="file" id="note-image" accept="image/*">
-                
-                <span id="file-name-display"></span>
-<span id="file-name-display"></span>
-
-      <div class="color-picker">
-          <label><input type="radio" name="note-color" value="#fff9c4" checked> <span style="background:#fff9c4"></span></label>
-          <label><input type="radio" name="note-color" value="#ffcce6"> <span style="background:#ffcce6"></span></label>
-          <label><input type="radio" name="note-color" value="#cce6ff"> <span style="background:#cce6ff"></span></label>
-          <label><input type="radio" name="note-color" value="#e6ffcc"> <span style="background:#e6ffcc"></span></label>
-      </div>
-
-      <button type="submit" id="submit-btn">Gửi Ghi Chú</button>
-            </div>
-        </form>
-    </footer>
+</footer>
 
     <script type="module" src="app.js"></script>
 </body>
