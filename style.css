@@ -36,55 +36,38 @@ header p {
 }
 
 /* === 1. BẢNG CHỨA MẨU GIẤY (Chuyển sang dạng Cột Pinterest) === */
+/* === 1. BẢNG CHỨA MẨU GIẤY (Dạng Bảng tin 1 Cột) === */
 #notes-container {
-    /* Quan trọng: KHÔNG dùng display: flex ở đây nữa */
-    display: block; 
-    
-    /* Mặc định trên điện thoại sẽ hiện 1 cột */
-    column-count: 1; 
-    column-gap: 20px;
+    display: flex;
+    flex-direction: column; /* Thần chú 1: Xếp tất cả theo chiều dọc */
+    align-items: center;    /* Căn giữa các mẩu giấy */
+    gap: 25px;              /* Khoảng cách đều nhau giữa các tờ giấy */
     
     width: 100%;
+    max-width: 650px;       /* Thần chú 2: Bóp hẹp chiều ngang lại cho vừa mắt đọc */
+    margin: 0 auto;         /* Đẩy toàn bộ bảng tin ra chính giữa màn hình */
+    
     min-height: 400px;
     padding: 20px;
     box-sizing: border-box;
 }
 
-/* Kỹ thuật Responsive: Tự động tăng số cột khi màn hình to ra */
-@media (min-width: 600px) {
-    #notes-container { column-count: 2; }
-}
-@media (min-width: 900px) {
-    /* Trên màn hình laptop MSI của bạn sẽ hiện 3 cột hoặc 4 cột */
-    #notes-container { column-count: 3; }
-}
-@media (min-width: 1200px) {
-    #notes-container { column-count: 4; }
-}
-
-/* Kỹ thuật "bắt kịch bản": Ép chữ thông báo ra giữa khi chưa có giấy nhớ */
+/* Ép chữ thông báo ra giữa khi chưa có giấy nhớ */
 #notes-container:not(:has(.note)) {
-    display: flex; /* Trả lại flex chỉ để căn giữa chữ "Trống" */
-    align-items: center; 
-    justify-content: center;
+    justify-content: center; 
 }
 
 /* === 2. ĐỊNH DẠNG TỪNG MẨU GIẤY === */
 .note {
-    /* Thần chú: Ngăn không cho tờ giấy bị cắt làm đôi giữa 2 cột */
-    break-inside: avoid;
-    page-break-inside: avoid; 
-    
-    /* Giao diện cơ bản */
-    width: 100%; /* Sẽ tự động phình to cho vừa với độ rộng của Cột */
-    margin-bottom: 20px; /* Tạo khoảng cách với tờ giấy bên dưới */
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    width: 100%; /* Giãn vừa khít với cái khung 650px ở trên */
+    padding: 20px; /* Tăng lề trong lên một chút cho chữ dễ thở */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Đổi bóng đổ cho mềm mại, sang trọng hơn */
     box-sizing: border-box;
     position: relative;
+    
+    /* (Đã xóa bỏ các lệnh break-inside của giao diện cũ vì không cần nữa) */
 }
-
 /* Trên màn hình máy tính MSI của Mạnh (màn hình rộng), cho hiện 3 cột cho đẹp */
 @media (min-width: 768px) {
     #notes-container {
