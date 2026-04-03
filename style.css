@@ -267,3 +267,11 @@ footer {
 #notes-container:has(.note) {
     justify-content: flex-start;
 }
+.loading {
+    color: #666;
+    font-style: italic;
+    font-size: 1.1rem;
+    /* Đảm bảo chữ không bị dính sát lề trên điện thoại */
+    padding: 20px;
+    text-align: center;
+}
