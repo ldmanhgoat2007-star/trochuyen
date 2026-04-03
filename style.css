@@ -35,30 +35,31 @@ header p {
     font-style: italic;
 }
 
-/* === Khu vực ghi chú (Notes Container) === */
 #notes-container {
-    /* Tạo một không gian có độ cao tối thiểu để chữ có chỗ mà "nằm giữa" */
-    min-height: 400px; 
-    
-    /* Sử dụng Flexbox để căn chỉnh */
     display: flex;
-    flex-direction: column; /* Xếp các ghi chú theo cột */
-    align-items: center;    /* Căn giữa theo chiều ngang */
-    justify-content: center; /* Căn giữa theo chiều dọc */
-    
-    width: 100%;
+    flex-wrap: wrap; /* Thần chú: Đầy hàng thì tự động rớt xuống dòng */
     gap: 20px;
+    justify-content: center; /* Căn giữa các mẩu giấy trên màn hình */
+    align-items: flex-start; /* Ai cao bao nhiêu thì cao, không bị kéo dãn bằng nhau */
+    width: 100%;
+    min-height: 400px;
     padding: 20px;
     box-sizing: border-box;
 }
+
+/* Kỹ thuật "bắt kịch bản": Ép chữ thông báo ra giữa khi chưa có giấy nhớ */
+#notes-container:not(:has(.note)) {
+    align-items: center; 
+}
 .note {
-    /* Quan trọng: Ngăn không cho mẩu giấy bị cắt đôi khi chuyển cột */
-    break-inside: avoid; 
-    display: inline-block; /* Chuyển về inline-block để Masonry hoạt động chuẩn */
-    width: 100%;
-    margin-bottom: 15px; /* Khoảng cách dưới mỗi ô */
+    width: 100%; /* Trên điện thoại, nó sẽ chiếm full màn hình cho dễ đọc */
+    max-width: 320px; /* QUAN TRỌNG: Lên màn hình máy tính, nó bị "nhốt" lại, to tối đa 320px thôi */
     
-    /* Giữ nguyên các code style khác của bạn (border-radius, padding...) */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+    box-sizing: border-box;
+    position: relative; /* Dành cho nút xóa */
 }
 
 /* Trên màn hình máy tính MSI của Mạnh (màn hình rộng), cho hiện 3 cột cho đẹp */
@@ -275,10 +276,9 @@ footer {
     justify-content: flex-start;
 }
 .loading {
-    color: #666;
+    margin: auto; /* Tự động đẩy chữ ra trung tâm */
+    color: #888;
     font-style: italic;
     font-size: 1.1rem;
-    /* Đảm bảo chữ không bị dính sát lề trên điện thoại */
-    padding: 20px;
     text-align: center;
 }
