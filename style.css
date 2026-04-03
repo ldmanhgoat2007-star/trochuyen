@@ -216,3 +216,20 @@ footer {
     .form-actions { flex-wrap: wrap; }
     #submit-btn { width: 100%; margin-top: 5px; }
 }
+/* === Nút Xóa Ghi Chú === */
+.delete-btn {
+    background: none;
+    border: none;
+    color: #ff9999;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    margin-left: 10px;
+}
+
+.delete-btn:hover {
+    color: white;
+    background-color: #ff4757;
+}
