@@ -93,11 +93,18 @@ header p {
     flex-grow: 1;
 }
 
+/* === Tùy chỉnh kích thước ảnh trong ghi chú === */
 .note-image {
-    max-width: 100%;
-    border-radius: 5px;
-    margin-bottom: 15px;
-    border: 1px solid #eee;
+    max-width: 100%; /* Bắt buộc ảnh không bao giờ được rộng hơn mẩu giấy nhớ */
+    height: auto;    /* Tự động điều chỉnh chiều cao theo tỷ lệ gốc để ảnh không bị méo */
+    
+    /* Các tùy chọn làm đẹp thêm (Khuyên dùng) */
+    max-height: 350px; /* Khống chế chiều cao tối đa để ảnh dọc không bị dài lê thê */
+    object-fit: cover; /* Tự động cắt cúp phần thừa nếu ảnh vượt quá 350px (giống avatar Facebook) */
+    border-radius: 8px; /* Bo góc ảnh cho mềm mại, đồng bộ với viền của tờ giấy */
+    margin-top: 10px;  /* Đẩy ảnh cách xa dòng chữ phía trên một chút cho thoáng */
+    margin-bottom: 10px;
+    display: block;
 }
 
 .note-meta {
