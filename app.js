@@ -137,3 +137,4 @@ function listenToNotes() {
 }
 
 listenToNotes();
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
