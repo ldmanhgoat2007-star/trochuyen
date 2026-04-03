@@ -185,3 +185,28 @@ notesContainer.addEventListener('click', async (e) => {
 
 // Bắt đầu nghe ngay khi trang web tải xong
 listenToNotes();
+// === LOGIC ẨN/HIỆN KHUNG VIẾT GHI CHÚ ===
+const toggleFormBtn = document.getElementById('toggle-form-btn');
+// Giả định form của bạn có id là 'note-form' (nếu khác thì bạn sửa lại tên ID cho đúng nhé)
+const noteFormContainer = document.getElementById('note-form'); 
+
+toggleFormBtn.addEventListener('click', () => {
+    // Bật/tắt class 'hidden'
+    noteFormContainer.classList.toggle('hidden');
+    
+    // Đổi chữ và màu nút tùy theo trạng thái
+    if (noteFormContainer.classList.contains('hidden')) {
+        toggleFormBtn.innerHTML = '✍️ Viết ghi chú mới';
+        toggleFormBtn.style.backgroundColor = '#ff6b81'; // Trả lại màu hồng
+    } else {
+        toggleFormBtn.innerHTML = '❌ Đóng khung viết';
+        toggleFormBtn.style.backgroundColor = '#888'; // Đổi sang màu xám khi đang mở
+    }
+});
+
+// Tùy chọn nâng cao: Tự động đóng form sau khi gửi thành công
+// Bạn có thể tìm đến dòng `noteForm.reset();` trong phần submit ảnh/chữ
+// Và dán thêm 2 dòng này ngay bên dưới nó:
+// noteFormContainer.classList.add('hidden');
+// toggleFormBtn.innerHTML = '✍️ Viết ghi chú mới';
+// toggleFormBtn.style.backgroundColor = '#ff6b81';
