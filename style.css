@@ -37,14 +37,20 @@ header p {
 
 /* === Khu vực ghi chú (Notes Container) === */
 #notes-container {
-    /* Chia bảng thành các cột (ví dụ 2 cột trên điện thoại, 3 cột trên máy tính) */
-    column-count: 2; 
-    column-gap: 15px;
+    /* Tạo một không gian có độ cao tối thiểu để chữ có chỗ mà "nằm giữa" */
+    min-height: 400px; 
+    
+    /* Sử dụng Flexbox để căn chỉnh */
+    display: flex;
+    flex-direction: column; /* Xếp các ghi chú theo cột */
+    align-items: center;    /* Căn giữa theo chiều ngang */
+    justify-content: center; /* Căn giữa theo chiều dọc */
+    
     width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    gap: 20px;
+    padding: 20px;
+    box-sizing: border-box;
 }
-
 .note {
     /* Quan trọng: Ngăn không cho mẩu giấy bị cắt đôi khi chuyển cột */
     break-inside: avoid; 
@@ -255,4 +261,9 @@ footer {
     padding: 15px;
     border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+}
+/* Nếu bên trong container CÓ các mẩu giấy ghi chú (class .note), 
+   thì chúng ta đẩy chúng lên trên đầu thay vì căn giữa dọc */
+#notes-container:has(.note) {
+    justify-content: flex-start;
 }
