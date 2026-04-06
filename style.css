@@ -407,3 +407,58 @@ body.dark h1 { color: #ff6b81; }
         margin-left: 15px !important;
     }
 }
+/* === THIẾT LẬP CẤU TRÚC KHUNG CHỨA (Flexbox) === */
+.web-wrapper {
+    display: flex; /* Dàn hàng ngang: lề - nội dung - lề */
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* === NỘI DUNG CHÍNH (Thu hẹp lại cho vừa mắt) === */
+.main-content {
+    flex: 1; /* Tự động phình to */
+    max-width: 800px; /* Giới hạn độ rộng để đọc cho dễ */
+    margin: 0 auto; /* Căn giữa */
+    background: white; /* Nền trắng trong sáng */
+    transition: background-color 0.3s;
+}
+
+/* === THIẾT LẬP LỀ SIDEBAR (Bức tranh Ghibli) === */
+.sidebar {
+    width: 15vw; /* Chiều rộng tính theo 15% màn hình (vw) */
+    min-width: 120px; /* Đảm bảo lề không bị bé quá trên màn hình nhỏ */
+    height: 100vh;
+    position: sticky; /* Đóng đinh lề khi cuộn bảng ghi chú */
+    top: 0;
+    transition: background 0.3s;
+}
+
+/* --- LIGHT MODE: Lề trời xanh mây trắng Ghibli --- */
+.sidebar-left {
+    /* Hiệu ứng mờ ảo (Lớp gradient trên cùng) + Ảnh nền mây Ghibli */
+    background: linear-gradient(135deg, rgba(230,247,255,0.8), rgba(255,255,255,0.2)),
+                url('https://i.pinimg.com/736x/8f/c1/9f/8fc19fb54318c5040f7d5c95c276f7f6.jpg') no-repeat center center/cover;
+}
+.sidebar-right {
+    background: linear-gradient(225deg, rgba(230,247,255,0.8), rgba(255,255,255,0.2)),
+                url('https://i.pinimg.com/736x/8f/c1/9f/8fc19fb54318c5040f7d5c95c276f7f6.jpg') no-repeat center center/cover;
+}
+
+/* --- DARK MODE: Lề bầu trời sao Ghibli --- */
+body.dark .main-content {
+    background-color: #242526;
+}
+body.dark .sidebar-left {
+    background: linear-gradient(135deg, rgba(24,25,26,0.9), rgba(0,0,0,0.4)),
+                url('https://i.pinimg.com/originals/16/3e/da/163eda626359a3930e463a8e32c842b1.jpg') no-repeat center center/cover;
+}
+body.dark .sidebar-right {
+    background: linear-gradient(225deg, rgba(24,25,26,0.9), rgba(0,0,0,0.4)),
+                url('https://i.pinimg.com/originals/16/3e/da/163eda626359a3930e463a8e32c842b1.jpg') no-repeat center center/cover;
+}
+
+/* === ẨN LỀ KHI XEM TRÊN ĐIỆN THOẠI === */
+@media (max-width: 1024px) {
+    .sidebar { display: none; } /* Tắt lề để nhường chỗ cho nội dung ghi chú */
+    .main-content { max-width: 100%; }
+}
