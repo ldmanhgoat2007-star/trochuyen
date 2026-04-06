@@ -34,7 +34,7 @@ header {
 header h1 { 
     font-family: 'Dancing Script', cursive; /* Áp dụng font viết tay */
     font-size: 3.5rem; /* Phóng to lên cho hoành tráng */
-    color: #ff6b81; 
+    color: #5bd856; 
     margin-bottom: 5px; 
     letter-spacing: 2px; /* Khoảng cách chữ thưa ra cho sang */
 }
@@ -381,7 +381,7 @@ body.dark footer { background-color: #242526; box-shadow: 0 -5px 20px rgba(0,0,0
 body.dark #note-content { background-color: #3a3b3c; color: #e4e6eb; border-color: #3a3b3c; }
 body.dark .note { filter: brightness(0.85); /* Làm dịu màu giấy nhớ trong đêm */ }
 body.dark .loading { color: #b0b3b8; }
-body.dark h1 { color: #ff6b81; }
+body.dark h1 { color: #6bffe5; }
 /* --- Sửa lỗi mờ chữ trong tờ giấy nhớ ở chế độ Dark Mode --- */
 body.dark .note {
     color: #1a1a1a !important; /* Ép chữ trong giấy nhớ phải là màu đen đậm */
