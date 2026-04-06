@@ -446,10 +446,10 @@ body.dark .note-time {
 /* --- LIGHT MODE: Lề trời xanh mây trắng Ghibli --- */
 .sidebar-left {
     /* Hiệu ứng mờ ảo (Lớp gradient trên cùng) + Ảnh nền mây Ghibli */
-    background:url('https://images5.alphacoders.com/135/1355890.png') no-repeat bottom center/cover;
+    background:url('https://i.pinimg.com/1200x/a4/12/5c/a4125c710f4343cff8fdd7715c69e2a5.jpg') no-repeat bottom center/cover;
 }
 .sidebar-right {
-    background:url('https://images5.alphacoders.com/135/1355890.png') no-repeat bottom center/cover;
+    background:url('https://i.pinimg.com/1200x/a4/12/5c/a4125c710f4343cff8fdd7715c69e2a5.jpg') no-repeat bottom center/cover;
 }
 
 /* --- DARK MODE: Lề bầu trời sao Ghibli --- */
@@ -457,10 +457,10 @@ body.dark .main-content {
     background-color: #242526;
 }
 body.dark .sidebar-left {
-    background:url('https://images5.alphacoders.com/140/thumb-1920-1405689.jpg') no-repeat center center/cover;
+    background:url('https://i.pinimg.com/736x/3d/4e/e5/3d4ee5372b8949f6ef8e9b9f65a4cdcf.jpg') no-repeat center center/cover;
 }
 body.dark .sidebar-right {
-    background:url('https://images5.alphacoders.com/140/thumb-1920-1405689.jpg') no-repeat center center/cover;
+    background:url('https://i.pinimg.com/736x/3d/4e/e5/3d4ee5372b8949f6ef8e9b9f65a4cdcf.jpg') no-repeat center center/cover;
 }
 
 /* === ẨN LỀ KHI XEM TRÊN ĐIỆN THOẠI === */
