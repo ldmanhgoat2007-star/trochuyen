@@ -1,164 +1,490 @@
-/* =========================================
-   1. CÀI ĐẶT CƠ BẢN (RESET & TIỆN ÍCH)
-========================================= */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* Phép tàng hình bắt buộc phải có cho tính năng Bật/Tắt */
+.hidden {
+    display: none !important;
+}
+/* === Reset cơ bản === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5; /* Màu nền xám nhạt */
+    background-image: url('https://www.pinterest.com/pin/16607092371401483/'); /* Họa tiết nhẹ */
     color: #333;
-    transition: background-color 0.3s, color 0.3s;
-    overflow-x: hidden; /* Chống cuộn ngang */
-}
-.hidden { display: none !important; }
-
-/* =========================================
-   2. BỐ CỤC TỔNG THỂ (LAYOUT 3 CỘT GHIBLI)
-========================================= */
-.web-wrapper {
     display: flex;
-    width: 100%;
+    flex-direction: column;
     min-height: 100vh;
-}
-.sidebar {
-    width: 18vw; 
-    min-width: 120px;
-    height: 100vh;
-    position: sticky;
-    top: 0;
-    transition: background 0.3s;
-}
-.sidebar-left {
-    background: url('https://i.pinimg.com/736x/58/51/dc/5851dc2b6b90858f88a134611a4ef400.jpg') no-repeat bottom center/cover;
-}
-.sidebar-right {
-    background: url('https://i.pinimg.com/736x/58/51/dc/5851dc2b6b90858f88a134611a4ef400.jpg') no-repeat bottom center/cover;
-    transform: scaleX(-1); /* Lật ảnh đối xứng */
-}
-.main-content {
-    flex: 1; 
-    min-height: 100vh;
-    background-color: #f0efd9; /* Màu nền vàng nhạt */
-    transition: background 0.3s ease;
-    padding-bottom: 180px; /* Chừa chỗ cho footer form */
+    padding-bottom: 160px; /* Chừa chỗ cho form ở dưới */
 }
 
-/* =========================================
-   3. HEADER & BẢNG GHI CHÚ
-========================================= */
+/* === Header === */
 header {
     text-align: center;
     padding: 30px 20px;
-    background: rgba(255, 255, 255, 0.6);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    background: rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid #ddd;
 }
-header h1 { font-size: 2rem; color: #ff6b81; margin-bottom: 5px; }
-header p { color: #777; font-style: italic; }
 
+header h1 {
+    font-size: 2rem;
+    color: #ff6b6b; /* Màu hồng ấm áp */
+    margin-bottom: 5px;
+}
+
+header p {
+    color: #777;
+    font-style: italic;
+}
+
+/* === 1. BẢNG CHỨA MẨU GIẤY (Chuyển sang dạng Cột Pinterest) === */
+/* === 1. BẢNG CHỨA MẨU GIẤY (Dạng Bảng tin 1 Cột) === */
 #notes-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 25px;
+    flex-direction: column; /* Thần chú 1: Xếp tất cả theo chiều dọc */
+    align-items: center;    /* Căn giữa các mẩu giấy */
+    gap: 25px;              /* Khoảng cách đều nhau giữa các tờ giấy */
+    
     width: 100%;
-    max-width: 800px; /* Ép form và giấy nhớ bằng nhau */
-    margin: 0 auto;
+    max-width: 650px;       /* Thần chú 2: Bóp hẹp chiều ngang lại cho vừa mắt đọc */
+    margin: 0 auto;         /* Đẩy toàn bộ bảng tin ra chính giữa màn hình */
+    
+    min-height: 400px;
     padding: 20px;
+    box-sizing: border-box;
 }
-.loading { margin: auto; color: #888; font-style: italic; text-align: center; }
 
-/* =========================================
-   4. THIẾT KẾ MẨU GIẤY NHỚ (NOTE)
-========================================= */
-.note {
-    width: 100%;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    position: relative;
-    transition: transform 0.2s, box-shadow 0.2s;
+/* Ép chữ thông báo ra giữa khi chưa có giấy nhớ */
+#notes-container:not(:has(.note)) {
+    justify-content: center; 
 }
+
+/* === 2. ĐỊNH DẠNG TỪNG MẨU GIẤY === */
+.note {
+    width: 100%; /* Giãn vừa khít với cái khung 650px ở trên */
+    padding: 20px; /* Tăng lề trong lên một chút cho chữ dễ thở */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Đổi bóng đổ cho mềm mại, sang trọng hơn */
+    box-sizing: border-box;
+    position: relative;
+    
+    /* (Đã xóa bỏ các lệnh break-inside của giao diện cũ vì không cần nữa) */
+}
+/* Trên màn hình máy tính MSI của Mạnh (màn hình rộng), cho hiện 3 cột cho đẹp */
+@media (min-width: 768px) {
+    #notes-container {
+        column-count: 3;
+    }
+}
+
 .note:hover {
     transform: translateY(-5px) rotate(1deg);
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
-.note::before { /* Cái ghim giấy */
-    content: ''; position: absolute; top: 12px; right: 12px;
-    width: 12px; height: 12px; background-color: rgba(0,0,0,0.1); border-radius: 50%;
+
+/* Tạo hiệu ứng ghim giấy */
+.note::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 15px;
+    height: 15px;
+    background-color: rgba(0,0,0,0.1);
+    border-radius: 50%;
 }
-.note-content { font-size: 1.1rem; line-height: 1.5; margin-bottom: 15px; white-space: pre-wrap; }
+
+.note-content {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    white-space: pre-wrap; /* Giữ nguyên xuống dòng */
+    flex-grow: 1;
+}
+
+/* === Tùy chỉnh kích thước ảnh trong ghi chú === */
 .note-image {
-    max-width: 100%; max-height: 350px;
-    object-fit: cover; border-radius: 8px;
-    margin: 10px 0; display: block;
+    max-width: 100%; /* Bắt buộc ảnh không bao giờ được rộng hơn mẩu giấy nhớ */
+    height: auto;    /* Tự động điều chỉnh chiều cao theo tỷ lệ gốc để ảnh không bị méo */
+    
+    /* Các tùy chọn làm đẹp thêm (Khuyên dùng) */
+    max-height: 350px; /* Khống chế chiều cao tối đa để ảnh dọc không bị dài lê thê */
+    object-fit: cover; /* Tự động cắt cúp phần thừa nếu ảnh vượt quá 350px (giống avatar Facebook) */
+    border-radius: 8px; /* Bo góc ảnh cho mềm mại, đồng bộ với viền của tờ giấy */
+    margin-top: 10px;  /* Đẩy ảnh cách xa dòng chữ phía trên một chút cho thoáng */
+    margin-bottom: 10px;
+    display: block;
 }
+
 .note-meta {
-    font-size: 0.85rem; color: #888;
+    font-size: 0.85rem;
+    color: #888;
     border-top: 1px solid rgba(0,0,0,0.05);
-    padding-top: 10px; display: flex; justify-content: space-between; align-items: center;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
 }
-.note-sender { font-weight: bold; color: #ff6b81; }
-.delete-btn {
-    background: none; border: none; color: #ff9999; cursor: pointer;
-    padding: 2px 5px; border-radius: 4px; margin-left: 10px;
+
+.note-sender {
+    font-weight: bold;
+    color: #ff6b6b;
 }
-.delete-btn:hover { color: white; background-color: #ff4757; }
 
-/* Màu sắc dự phòng */
-.note:nth-child(4n+1) { background-color: #fff9c4; }
-.note:nth-child(4n+2) { background-color: #e1f5fe; }
-.note:nth-child(4n+3) { background-color: #f8bbd0; }
-.note:nth-child(4n+4) { background-color: #e8f5e9; }
+/* Màu sắc ngẫu nhiên cho giấy nhớ */
+.note:nth-child(4n+1) { background-color: #fff9c4; } /* Vàng */
+.note:nth-child(4n+2) { background-color: #e1f5fe; } /* Xanh biển */
+.note:nth-child(4n+3) { background-color: #f8bbd0; } /* Hồng */
+.note:nth-child(4n+4) { background-color: #e8f5e9; } /* Xanh lá */
 
-/* =========================================
-   5. FOOTER & FORM NHẬP LIỆU (CĂN CHUẨN)
-========================================= */
+/* === Footer & Form === */
 footer {
-    position: fixed; bottom: 0; left: 0; width: 100%;
-    background-color: #fff; padding: 15px 20px;
-    box-shadow: 0 -5px 20px rgba(0,0,0,0.05); z-index: 1000;
-}
-#note-form {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    max-width: 800px; /* Ép bằng đúng kích thước của #notes-container */
-    margin: 0 auto;
-    display: flex; flex-direction: column; gap: 10px;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.05);
+    z-index: 1000;
 }
-#note-content {
-    width: 100%; min-height: 60px; padding: 15px;
-    border: 1px solid #ddd; border-radius: 8px;
-    resize: none; font-size: 1rem;
-}
-#note-content:focus { outline: none; border-color: #ff6b81; }
-.form-bottom-row {
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;
-}
-.form-actions { display: flex; align-items: center; gap: 15px; }
-#note-image { display: none; }
-.custom-file-upload {
-    display: flex; align-items: center; gap: 8px; padding: 8px 15px;
-    background-color: #4ecdc4; color: white; border-radius: 8px; cursor: pointer; font-size: 0.9rem;
-}
-.custom-file-upload:hover { background-color: #3cb3ab; }
-#file-name-display { font-size: 0.85rem; color: #777; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-/* Chọn màu & Nút gửi */
-.color-picker { display: flex; gap: 10px; justify-content: center; margin: 0; }
+#note-form {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#note-content {
+    width: 100%;
+    height: 70px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    resize: none;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+#note-content:focus {
+    outline: none;
+    border-color: #ff6b6b;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Tùy chỉnh nút chèn ảnh */
+#note-image {
+    display: none;
+}
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background-color: #4ecdc4; /* Xanh ngọc */
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.custom-file-upload:hover {
+    background-color: #3cb3ab;
+}
+
+#file-name-display {
+    font-size: 0.85rem;
+    color: #777;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#submit-btn {
+    margin-left: auto; /* Đẩy nút gửi về bên phải */
+    padding: 10px 25px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+#submit-btn:hover {
+    background-color: #ee5253;
+}
+
+/* === Responsive (Cho Mobile) === */
+@media (max-width: 600px) {
+    header h1 { font-size: 1.5rem; }
+    #notes-container { grid-template-columns: 1fr; padding: 10px; }
+    footer { padding: 10px; }
+    .form-actions { flex-wrap: wrap; }
+    #submit-btn { width: 100%; margin-top: 5px; }
+}
+/* === Nút Xóa Ghi Chú === */
+.delete-btn {
+    background: none;
+    border: none;
+    color: #ff9999;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 2px 5px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    margin-left: 10px;
+}
+
+.delete-btn:hover {
+    color: white;
+    background-color: #ff4757;
+}
+.color-picker {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    justify-content: center;
+}
 .color-picker label { cursor: pointer; }
 .color-picker input { display: none; }
-.color-picker span { display: block; width: 25px; height: 25px; border-radius: 50%; border: 2px solid transparent; transition: 0.2s; }
-.color-picker input:checked + span { border-color: #666; transform: scale(1.2); }
-
-.submit-group { display: flex; align-items: center; gap: 15px; margin-left: auto; }
-#change-name-btn { cursor: pointer; font-size: 0.9rem; color: #888; text-decoration: underline; white-space: nowrap; }
-#submit-btn {
-    padding: 10px 25px; background-color: #ff6b81; color: white;
-    border: none; border-radius: 8px; cursor: pointer; font-weight: bold;
+.color-picker span {
+    display: block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: 0.2s;
 }
-#submit-btn:hover { background-color: #ee5253; }
+.color-picker input:checked + span {
+    border-color: #666;
+    transform: scale(1.2);
+}
+/* Cập nhật class note để nhận màu động */
+.note {
+    /* Xóa dòng background cũ nếu có */
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+}
+/* Nếu bên trong container CÓ các mẩu giấy ghi chú (class .note), 
+   thì chúng ta đẩy chúng lên trên đầu thay vì căn giữa dọc */
+#notes-container:has(.note) {
+    justify-content: flex-start;
+}
+.loading {
+    margin: auto; /* Tự động đẩy chữ ra trung tâm */
+    color: #888;
+    font-style: italic;
+    font-size: 1.1rem;
+    text-align: center;
+}
 
-/* Nút mũi tên đóng/mở form */
+#note-form {
+    max-width: 800px; 
+    margin: 0 auto;   
+}
+
+.form-bottom-row {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;            
+    flex-wrap: wrap;                
+    margin-top: 15px;
+    gap: 15px;
+}
+/* Giao diện nút bấm hình tròn */
 .arrow-btn {
-    background-color: #fff; color: #ff6b81; border: 2px solid #ff6b81;
-    border-radius: 50%; width: 40px; height: 40px;
+    background-color: #fff; /* Nền trắng */
+    color: #ff6b81;         /* Màu mũi tên hồng */
+    border: 2px solid #ff6b81;
+    border-radius: 50%;     /* Làm tròn xoe */
+    width: 45px;            
+    height: 45px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+/* Hiệu ứng khi di chuột vào nút */
+.arrow-btn:hover {
+    background-color: #ff6b81;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 107, 129, 0.3);
+}
+
+/* Hiệu ứng xoay của Mũi tên */
+#arrow-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.4s ease; /* Xoay mượt mà trong 0.4 giây */
+}
+
+/* Các trạng thái của mũi tên */
+.arrow-up {
+    transform: rotate(0deg); /* Khi form ẩn: Mũi tên hướng LÊN (theo ý bạn) */
+}
+
+.arrow-down {
+    transform: rotate(180deg); /* Khi form hiện: Lật ngược 180 độ thành hướng XUỐNG */
+}
+
+.color-picker {
+    margin-bottom: 0;
+}
+/* === CHẾ ĐỘ DARK MODE === */
+body { transition: background-color 0.3s, color 0.3s; }
+body.dark {
+    background-color: #18191a; /* Đen nhạt giống giao diện Facebook */
+    background-image: none;
+    color: #e4e6eb;
+}
+body.dark header { background: #242526; border-bottom: 1px solid #3e4042; }
+body.dark footer { background-color: #242526; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
+body.dark #note-content { background-color: #3a3b3c; color: #e4e6eb; border-color: #3a3b3c; }
+body.dark .note { filter: brightness(0.85); /* Làm dịu màu giấy nhớ trong đêm */ }
+body.dark .loading { color: #b0b3b8; }
+body.dark h1 { color: #ff6b81; }
+/* --- Sửa lỗi mờ chữ trong tờ giấy nhớ ở chế độ Dark Mode --- */
+body.dark .note {
+    color: #1a1a1a !important; /* Ép chữ trong giấy nhớ phải là màu đen đậm */
+}
+body.dark .note-meta {
+    border-top: 1px solid rgba(0,0,0,0.1); /* Giữ đường kẻ mờ màu tối */
+}
+body.dark .note-time {
+    color: #555 !important; /* Thời gian màu xám đậm cho dễ nhìn */
+}
+
+/* === HIỆU ỨNG TIM BAY === */
+.heart-btn { position: relative; transition: transform 0.1s; }
+.heart-btn:active { transform: scale(1.2); /* Giật nảy nhẹ khi bấm */ }
+.floating-heart {
+    position: absolute;
+    top: -15px;
+    left: 5px;
+    font-size: 1.5rem;
+    animation: floatUp 0.8s ease-out forwards;
+    pointer-events: none;
+}
+@keyframes floatUp {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-40px) scale(1.5); }
+}
+/* === CỤM NÚT GỬI VÀ ĐỔI TÊN === */
+.submit-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto; /* Đẩy toàn bộ cụm sang bên phải trên máy tính */
+}
+
+#change-name-btn {
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #888;
+    text-decoration: underline;
+    white-space: nowrap; /* Thần chú chống đứt chữ thành 2 dòng */
+}
+
+/* === SỬA LỖI TRÊN ĐIỆN THOẠI (Mobile) === */
+@media (max-width: 600px) {
+    .submit-group {
+        width: 100%; /* Cụm nút sẽ giãn đều 2 bên mép màn hình */
+        justify-content: space-between; 
+        margin-top: 10px;
+    }
+    
+    #submit-btn {
+        flex: 1; /* Nút gửi tự động chiếm phần không gian còn lại */
+        margin-top: 0 !important;
+        margin-left: 15px !important;
+    }
+}
+/* === THIẾT LẬP CẤU TRÚC KHUNG CHỨA (Flexbox) === */
+.web-wrapper {
+    display: flex; /* Dàn hàng ngang: lề - nội dung - lề */
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* === NỘI DUNG CHÍNH (Thu hẹp lại cho vừa mắt) === */
+.main-content {
+    flex: 1; /* Tự động phình to */
+    max-width: 800px; /* Giới hạn độ rộng để đọc cho dễ */
+    margin: 0 auto; /* Căn giữa */
+    background: white; /* Nền trắng trong sáng */
+    transition: background-color 0.3s;
+}
+
+/* === THIẾT LẬP LỀ SIDEBAR (Bức tranh Ghibli) === */
+.sidebar {
+    width: 15vw; /* Chiều rộng tính theo 15% màn hình (vw) */
+    min-width: 120px; /* Đảm bảo lề không bị bé quá trên màn hình nhỏ */
+    height: 100vh;
+    position: sticky; /* Đóng đinh lề khi cuộn bảng ghi chú */
+    top: 0;
+    transition: background 0.3s;
+}
+
+/* --- LIGHT MODE: Lề trời xanh mây trắng Ghibli --- */
+.sidebar-left {
+    /* Hiệu ứng mờ ảo (Lớp gradient trên cùng) + Ảnh nền mây Ghibli */
+    background:url('https://i.pinimg.com/736x/58/51/dc/5851dc2b6b90858f88a134611a4ef400.jpg') no-repeat bottom center/cover;
+}
+.sidebar-right {
+    background:url('https://i.pinimg.com/736x/58/51/dc/5851dc2b6b90858f88a134611a4ef400.jpg') no-repeat bottom center/cover;
+}
+
+/* --- DARK MODE: Lề bầu trời sao Ghibli --- */
+body.dark .main-content {
+    background-color: #242526;
+}
+body.dark .sidebar-left {
+    background:url('https://i.pinimg.com/736x/55/79/fa/5579faecc2662a273a5b8044cacc95e2.jpg') no-repeat center center/cover;
+}
+body.dark .sidebar-right {
+    background:url('https://i.pinimg.com/736x/55/79/fa/5579faecc2662a273a5b8044cacc95e2.jpg') no-repeat center center/cover;
+}
+
+/* === ẨN LỀ KHI XEM TRÊN ĐIỆN THOẠI === */
+@media (max-width: 1024px) {
+    .sidebar { display: none; } /* Tắt lề để nhường chỗ cho nội dung ghi chú */
+    .main-content { max-width: 100%; }
+}
+/* === NỘI DUNG CHÍNH (Khu vực ở giữa chứa ghi chú) === */
+.main-content {
+    flex: 1;             /* Tự động giãn ra chiếm hết khoảng trống giữa 2 lề */
+    max-width: 800px;    /* Bóp hẹp chiều ngang lại cho mắt dễ đọc */
+    margin: 0 auto;      /* Ép nó đứng vào chính giữa màn hình */
+    min-height: 100vh;   /* Đảm bảo khung luôn dài chạm đáy màn hình */
+    
+    /* 🎨 CHỈNH MÀU/ẢNH NỀN Ở ĐÂY: */
+    /* Cách 1 - Dùng màu trơn (Ví dụ: #fffde7 là màu giấy ngả vàng cổ điển) */
+    background-color: #f0efd9; 
+    
+    /* Cách 2 - Nếu thích dùng ảnh thì XÓA dòng màu ở trên đi và dùng dòng này: */
+    /* background: url('LINK_ẢNH_CỦA_BẠN') no-repeat center center / cover; */
+    
+    transition: background 0.3s ease; /* Chuyển màu mượt mà khi bật/tắt Dark Mode */
+}
+
 /* Đảm bảo ban đêm nền chuyển sang màu tối bảo vệ mắt */
 body.dark .main-content {
     background-color: #0a253f; 
