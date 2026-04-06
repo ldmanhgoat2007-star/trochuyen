@@ -423,16 +423,6 @@ body.dark .note-time {
     width: 100%;
     min-height: 100vh;
 }
-
-/* === NỘI DUNG CHÍNH (Thu hẹp lại cho vừa mắt) === */
-.main-content {
-    flex: 1; /* Tự động phình to */
-    max-width: 800px; /* Giới hạn độ rộng để đọc cho dễ */
-    margin: 0 auto; /* Căn giữa */
-    background: white; /* Nền trắng trong sáng */
-    transition: background-color 0.3s;
-}
-
 /* === THIẾT LẬP LỀ SIDEBAR (Bức tranh Ghibli) === */
 .sidebar {
     width: 15vw; /* Chiều rộng tính theo 15% màn hình (vw) */
@@ -470,8 +460,8 @@ body.dark .sidebar-right {
 }
 /* === NỘI DUNG CHÍNH (Khu vực ở giữa chứa ghi chú) === */
 .main-content {
-    flex: 1;             /* Tự động giãn ra chiếm hết khoảng trống giữa 2 lề */
-    max-width: 800px;    /* Bóp hẹp chiều ngang lại cho mắt dễ đọc */
+    flex: 1;  
+    width: 100%;/* Tự động giãn ra chiếm hết khoảng trống giữa 2 lề */
     margin: 0 auto;      /* Ép nó đứng vào chính giữa màn hình */
     min-height: 100vh;   /* Đảm bảo khung luôn dài chạm đáy màn hình */
     
