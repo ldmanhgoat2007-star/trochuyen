@@ -4,61 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gửi ghi chú</title>
-    <link rel="stylesheet" href="style.css?v=2">
-    <link rel="icon" href="favicon.gif" type="image/gif?v=2">
+    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="icon" href="favicon.gif" type="image/gif">
 </head>
 <body>
 
-    <header>
-        <h1 style="position: relative;">
-            Bảng Ghi Chú
-            <button id="theme-toggle" style="position: absolute; right: 10px; top: -5px; background: none; border: none; font-size: 1.5rem; cursor: pointer;">🌙</button>
-        </h1>
-        <p>Của Anh Với Em Bống</p>
-    </header>
+    <button id="theme-toggle" style="position: fixed; right: 20px; top: 20px; background: none; border: none; font-size: 2rem; cursor: pointer; z-index: 2000;">🌙</button>
 
-    <main id="notes-container">
-        <div class="loading">Đang tải ghi chú...</div>
-    </main>
+    <div class="web-wrapper">
+        
+        <div class="sidebar sidebar-left"></div>
+        
+        <div class="main-content">
+            <header>
+                <h1>Bảng Ghi Chú</h1>
+                <p>Của Anh Với Em Bống</p>
+            </header>
 
-<footer>
-    <div style="text-align: center; margin-bottom: 20px;">
-        <button id="toggle-form-btn" type="button" class="arrow-btn">
-            <svg id="arrow-icon" class="arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 15 12 9 18 15"></polyline>
-            </svg>
-        </button>
-    </div>
-    <form id="note-form" class="hidden">
-        <div class="form-group">
-            <textarea id="note-content" placeholder="Viết điều gì đó cho người kia..." required></textarea>
+            <main id="notes-container">
+                <div class="loading">Đang tải ghi chú...</div>
+            </main>
         </div>
         
-        <div class="form-bottom-row">
-        <div class="form-actions">
-            <label for="note-image" class="custom-file-upload">
-                <img src="https://img.icons8.com/material-outlined/24/ffffff/image.png" alt="Icon ảnh"/> Chèn ảnh
-            </label>
-            <input type="file" id="note-image" accept="image/*">
-            <span id="file-name-display"></span>
-        </div>
-
-        <div class="color-picker">
-            <label><input type="radio" name="note-color" value="#fff9c4"> <span style="background:#fff9c4"></span></label>
-            <label><input type="radio" name="note-color" value="#ffcce6"> <span style="background:#ffcce6"></span></label>
-            <label><input type="radio" name="note-color" value="#cce6ff"> <span style="background:#cce6ff"></span></label>
-            <label><input type="radio" name="note-color" value="#e6ffcc" checked> <span style="background:#e6ffcc"></span></label>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 15px;">
-            <span id="change-name-btn" style="cursor: pointer; font-size: 0.9rem; color: #888; text-decoration: underline;">Đổi tên</span>
-            <button type="submit" id="submit-btn">Gửi Ghi Chú</button>
-        </div>
+        <div class="sidebar sidebar-right"></div>
+        
     </div>
 
-    </form>
-</footer>
+    <footer>
+        <div style="text-align: center; margin-bottom: 20px;">
+            <button id="toggle-form-btn" type="button" class="arrow-btn">
+                <svg id="arrow-icon" class="arrow-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 15 12 9 18 15"></polyline>
+                </svg>
+            </button>
+        </div>
+        
+        <form id="note-form" class="hidden">
+            <div class="form-group">
+                <textarea id="note-content" placeholder="Viết điều gì đó cho người kia..." required></textarea>
+            </div>
+            
+            <div class="form-bottom-row">
+                <div class="form-actions">
+                    <label for="note-image" class="custom-file-upload">
+                        <img src="https://img.icons8.com/material-outlined/24/ffffff/image.png" alt="Icon ảnh"/> Chèn ảnh
+                    </label>
+                    <input type="file" id="note-image" accept="image/*">
+                    <span id="file-name-display"></span>
+                </div>
 
-    <script type="module" src="app.js"></script>
+                <div class="color-picker">
+                    <label><input type="radio" name="note-color" value="#fff9c4"> <span style="background:#fff9c4"></span></label>
+                    <label><input type="radio" name="note-color" value="#ffcce6"> <span style="background:#ffcce6"></span></label>
+                    <label><input type="radio" name="note-color" value="#cce6ff"> <span style="background:#cce6ff"></span></label>
+                    <label><input type="radio" name="note-color" value="#e6ffcc" checked> <span style="background:#e6ffcc"></span></label>
+                </div>
+
+                <div class="submit-group">
+                    <span id="change-name-btn">Đổi tên</span>
+                    <button type="submit" id="submit-btn">Gửi Ghi Chú</button>
+                </div>
+            </div>
+        </form>
+    </footer>
+
+    <script type="module" src="app.js?v=4"></script>
 </body>
 </html>
