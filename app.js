@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 // === 1. CẤU HÌNH FIREBASE (Chỉ dùng Firestore) ===
 const firebaseConfig = {
   // DÁN MÃ FIREBASE CONFIG CỦA BẠN VÀO ĐÂY
@@ -125,10 +125,13 @@ function renderNote(docSnapshot) {
         noteHtml += `<img src="${data.imageUrl}" alt="Ảnh ghi chú" class="note-image">`;
     }
     
-    noteHtml += `
+   noteHtml += `
         <div class="note-meta">
-            <div>
+            <div style="display: flex; align-items: center; gap: 12px;">
                 <span class="note-sender">${data.sender}</span>
+                <button class="heart-btn" data-id="${noteId}" style="background:none; border:none; cursor:pointer; font-size:1rem; padding:0;">
+                    ❤️ <span style="font-weight:bold; color:#ff6b81;">${data.likes || 0}</span>
+                </button>
                 ${deleteBtnHtml} 
             </div>
             <span class="note-time">${timeString}</span>
@@ -213,3 +216,42 @@ if (changeNameBtn) {
         }
     });
 }
+// === LOGIC DARK MODE ===
+const themeToggle = document.getElementById('theme-toggle');
+const bodyElement = document.body;
+
+// Giữ nguyên trạng thái Tối/Sáng nếu người dùng f5 lại trang
+if (localStorage.getItem('dark_mode') === 'true') {
+    bodyElement.classList.add('dark');
+    themeToggle.textContent = '☀️';
+}
+
+themeToggle.addEventListener('click', () => {
+    bodyElement.classList.toggle('dark');
+    const isDark = bodyElement.classList.contains('dark');
+    localStorage.setItem('dark_mode', isDark); // Lưu vào trí nhớ
+    themeToggle.textContent = isDark ? '☀️' : '🌙';
+});
+
+// === LOGIC BẮT SỰ KIỆN THẢ TIM ===
+notesContainer.addEventListener('click', async (e) => {
+    const heartBtn = e.target.closest('.heart-btn');
+    if (heartBtn) {
+        const noteId = heartBtn.getAttribute('data-id');
+        const noteRef = doc(db, "notes", noteId);
+        
+        // Gửi lệnh +1 lượt thích lên Firebase
+        await updateDoc(noteRef, {
+            likes: increment(1)
+        });
+
+        // Tạo ra một trái tim nhỏ bay lơ lửng rồi biến mất
+        const floatingHeart = document.createElement('div');
+        floatingHeart.textContent = '💖';
+        floatingHeart.className = 'floating-heart';
+        heartBtn.appendChild(floatingHeart);
+        
+        // Tự động dọn rác HTML sau khi bay xong (tránh giật máy)
+        setTimeout(() => floatingHeart.remove(), 800);
+    }
+});
