@@ -23,11 +23,15 @@ body {
 /* === Header === */
 header {
     text-align: center;
-    padding: 30px 20px;
-    background: rgba(255, 255, 255, 0.8);
-    border-bottom: 1px solid #ddd;
+    padding: 40px 20px; /* Tăng padding lên xíu cho ảnh lộ ra nhiều hơn */
+    
+    /* --- CHÈN ẢNH NỀN VÀO ĐÂY --- */
+    background-image: url(https://i.pinimg.com/1200x/23/20/b3/2320b3e6fb349c0a85acfbbe2efd159b.jpg);
+    background-size: cover;      /* Ép ảnh phủ kín toàn bộ khung header */
+    background-position: center; /* Căn ảnh ra giữa để không bị mất góc đẹp */
+    
+    border-bottom: 1px solid rgba(0,0,0,0.1);
 }
-
 /* =========================================
    SỬA TIÊU ĐỀ TRONG PHẦN BỐ CỤC CHUNG (BAN NGÀY)
 ========================================= */
@@ -376,7 +380,19 @@ body.dark {
     background-image: none;
     color: #e4e6eb;
 }
-body.dark header { background: #242526; border-bottom: 1px solid #3e4042; }
+body.dark header { 
+    /* --- CHÈN ẢNH ĐÊM VÀO ĐÂY (Ví dụ ảnh dải ngân hà) --- */
+    background-image: url(https://i.pinimg.com/736x/41/c0/cf/41c0cff5be6e4febf7a2fc9ece143902.jpg);
+    background-size: cover;
+    background-position: center;
+    
+    /* Mẹo Pro: Phủ một lớp sương đen mỏng (opacity 60%) lên ảnh 
+       để bức ảnh chìm xuống, nhường spotlight cho chữ Neon tỏa sáng */
+    background-color: rgba(0, 0, 0, 0.6);
+    background-blend-mode: overlay; 
+    
+    border-bottom: 1px solid #112233; 
+}
 body.dark footer { background-color: #242526; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
 body.dark #note-content { background-color: #3a3b3c; color: #e4e6eb; border-color: #3a3b3c; }
 body.dark .note { filter: brightness(0.85); /* Làm dịu màu giấy nhớ trong đêm */ }
