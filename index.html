@@ -11,7 +11,7 @@
 
     <header>
         <h1>Bảng Ghi Chú</h1>
-        <p>Của Anh Với Em Bống <span id="change-name-btn" style="cursor: pointer; font-size: 0.8rem; color: #ff6b81; text-decoration: underline; margin-left: 10px;">(Đổi tên)</span></p>
+        <p>Của Anh Với Em Bống</p>
     </header>
 
     <main id="notes-container">
@@ -47,7 +47,10 @@
             <label><input type="radio" name="note-color" value="#e6ffcc" checked> <span style="background:#e6ffcc"></span></label>
         </div>
 
-        <button type="submit" id="submit-btn">Gửi Ghi Chú</button>
+        <div style="display: flex; align-items: center; gap: 15px;">
+            <span id="change-name-btn" style="cursor: pointer; font-size: 0.9rem; color: #888; text-decoration: underline;">Đổi tên</span>
+            <button type="submit" id="submit-btn">Gửi Ghi Chú</button>
+        </div>
     </div>
 
     </form>
