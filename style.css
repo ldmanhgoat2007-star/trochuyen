@@ -377,3 +377,33 @@ body.dark h1 { color: #ff6b81; }
     0% { opacity: 1; transform: translateY(0) scale(1); }
     100% { opacity: 0; transform: translateY(-40px) scale(1.5); }
 }
+/* === CỤM NÚT GỬI VÀ ĐỔI TÊN === */
+.submit-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto; /* Đẩy toàn bộ cụm sang bên phải trên máy tính */
+}
+
+#change-name-btn {
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #888;
+    text-decoration: underline;
+    white-space: nowrap; /* Thần chú chống đứt chữ thành 2 dòng */
+}
+
+/* === SỬA LỖI TRÊN ĐIỆN THOẠI (Mobile) === */
+@media (max-width: 600px) {
+    .submit-group {
+        width: 100%; /* Cụm nút sẽ giãn đều 2 bên mép màn hình */
+        justify-content: space-between; 
+        margin-top: 10px;
+    }
+    
+    #submit-btn {
+        flex: 1; /* Nút gửi tự động chiếm phần không gian còn lại */
+        margin-top: 0 !important;
+        margin-left: 15px !important;
+    }
+}
