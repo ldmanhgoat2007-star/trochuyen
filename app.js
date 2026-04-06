@@ -105,7 +105,7 @@ function renderNote(docSnapshot) {
     noteDiv.className = 'note';
     
     // Áp dụng màu nền (Nếu không có màu thì mặc định màu vàng)
-    noteDiv.style.backgroundColor = data.color || "#fff9c4"; 
+    noteDiv.style.backgroundColor = data.color || "#e6ffcc"; 
 
     // Xử lý thời gian
     let timeString = "...";
