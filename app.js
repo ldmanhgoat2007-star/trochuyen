@@ -200,3 +200,16 @@ if (toggleFormBtn && noteFormContainer && arrowIcon) {
 } else {
     console.error("Lỗi: Không tìm thấy nút mũi tên hoặc form trong HTML!");
 }
+// === LOGIC ĐỔI TÊN NGƯỜI DÙNG ===
+const changeNameBtn = document.getElementById('change-name-btn');
+
+if (changeNameBtn) {
+    changeNameBtn.addEventListener('click', () => {
+        if(confirm("Bạn có muốn đổi tên khác không?")) {
+            // Xóa tên cũ trong bộ nhớ
+            localStorage.removeItem('chat_user_name');
+            // Tải lại trang web (nó sẽ tự động hỏi lại tên mới)
+            location.reload(); 
+        }
+    });
+}
