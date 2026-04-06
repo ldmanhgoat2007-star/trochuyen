@@ -446,12 +446,10 @@ body.dark .note-time {
 /* --- LIGHT MODE: Lề trời xanh mây trắng Ghibli --- */
 .sidebar-left {
     /* Hiệu ứng mờ ảo (Lớp gradient trên cùng) + Ảnh nền mây Ghibli */
-    background: linear-gradient(135deg, rgba(230,247,255,0.8), rgba(255,255,255,0.2)),
-                url('https://s3.cloud.cmctelecom.vn/tinhte1/2018/03/4263042_1514330806547.jpg') no-repeat center center/cover;
+    background:url('https://s3.cloud.cmctelecom.vn/tinhte1/2018/03/4263042_1514330806547.jpg') no-repeat center center/cover;
 }
 .sidebar-right {
-    background: linear-gradient(225deg, rgba(230,247,255,0.8), rgba(255,255,255,0.2)),
-                url('https://s3.cloud.cmctelecom.vn/tinhte1/2018/03/4263042_1514330806547.jpg') no-repeat center center/cover;
+    background:url('https://s3.cloud.cmctelecom.vn/tinhte1/2018/03/4263042_1514330806547.jpg') no-repeat center center/cover;
 }
 
 /* --- DARK MODE: Lề bầu trời sao Ghibli --- */
@@ -459,12 +457,10 @@ body.dark .main-content {
     background-color: #242526;
 }
 body.dark .sidebar-left {
-    background: linear-gradient(135deg, rgba(24,25,26,0.9), rgba(0,0,0,0.4)),
-                url('https://images5.alphacoders.com/140/thumb-1920-1405689.jpg') no-repeat center center/cover;
+    background:url('https://images5.alphacoders.com/140/thumb-1920-1405689.jpg') no-repeat center center/cover;
 }
 body.dark .sidebar-right {
-    background: linear-gradient(225deg, rgba(24,25,26,0.9), rgba(0,0,0,0.4)),
-                url('https://images5.alphacoders.com/140/thumb-1920-1405689.jpg') no-repeat center center/cover;
+    background:url('https://images5.alphacoders.com/140/thumb-1920-1405689.jpg') no-repeat center center/cover;
 }
 
 /* === ẨN LỀ KHI XEM TRÊN ĐIỆN THOẠI === */
