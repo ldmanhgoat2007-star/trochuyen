@@ -217,9 +217,9 @@ if (changeNameBtn) {
     });
 }
 // === LOGIC DARK MODE ===
-const themeToggle = document.getElementById('theme-toggle');
+const themeToggle = document.getElementById('theme-toggle'); 
+// (Mình đã đổi ID từ toggle-form-btn sang theme-toggle trong HTML mới)
 const bodyElement = document.body;
-
 // Giữ nguyên trạng thái Tối/Sáng nếu người dùng f5 lại trang
 if (localStorage.getItem('dark_mode') === 'true') {
     bodyElement.classList.add('dark');
