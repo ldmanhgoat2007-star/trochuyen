@@ -446,10 +446,10 @@ body.dark .note-time {
 /* --- LIGHT MODE: Lề trời xanh mây trắng Ghibli --- */
 .sidebar-left {
     /* Hiệu ứng mờ ảo (Lớp gradient trên cùng) + Ảnh nền mây Ghibli */
-    background:url('https://i.pinimg.com/1200x/a4/12/5c/a4125c710f4343cff8fdd7715c69e2a5.jpg') no-repeat bottom center/cover;
+    background:url('https://i.pinimg.com/736x/58/51/dc/5851dc2b6b90858f88a134611a4ef400.jpg') no-repeat bottom center/cover;
 }
 .sidebar-right {
-    background:url('https://i.pinimg.com/1200x/a4/12/5c/a4125c710f4343cff8fdd7715c69e2a5.jpg') no-repeat bottom center/cover;
+    background:url('https://i.pinimg.com/736x/58/51/dc/5851dc2b6b90858f88a134611a4ef400.jpg') no-repeat bottom center/cover;
 }
 
 /* --- DARK MODE: Lề bầu trời sao Ghibli --- */
