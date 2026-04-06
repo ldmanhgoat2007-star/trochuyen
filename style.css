@@ -28,17 +28,38 @@ header {
     border-bottom: 1px solid #ddd;
 }
 
-header h1 {
-    font-size: 2rem;
-    color: #ff6b6b; /* Màu hồng ấm áp */
-    margin-bottom: 5px;
+/* =========================================
+   SỬA TIÊU ĐỀ TRONG PHẦN BỐ CỤC CHUNG (BAN NGÀY)
+========================================= */
+header h1 { 
+    font-family: 'Dancing Script', cursive; /* Áp dụng font viết tay */
+    font-size: 3.5rem; /* Phóng to lên cho hoành tráng */
+    color: #ff6b81; 
+    margin-bottom: 5px; 
+    letter-spacing: 2px; /* Khoảng cách chữ thưa ra cho sang */
 }
 
-header p {
-    color: #777;
-    font-style: italic;
+header p { 
+    color: #888; 
+    font-style: italic; 
+    font-size: 1.1rem; /* Tăng size chữ phụ lên một chút */
+    letter-spacing: 1px;
 }
 
+/* =========================================
+   SỬA TIÊU ĐỀ TRONG PHẦN DARK MODE (BAN ĐÊM)
+========================================= */
+body.dark h1 { 
+    color: #ff8599; 
+    /* Hiệu ứng bóng đổ nhiều lớp tạo cảm giác phát sáng neon ảo diệu */
+    text-shadow: 0 0 10px rgba(255, 133, 153, 0.6),
+                 0 0 20px rgba(255, 133, 153, 0.4),
+                 0 0 30px rgba(255, 133, 153, 0.2);
+}
+
+body.dark header p {
+    color: #c4c6ca; /* Đổi màu chữ phụ sáng lên để không bị chìm vào nền đen */
+}
 /* === 1. BẢNG CHỨA MẨU GIẤY (Chuyển sang dạng Cột Pinterest) === */
 /* === 1. BẢNG CHỨA MẨU GIẤY (Dạng Bảng tin 1 Cột) === */
 #notes-container {
