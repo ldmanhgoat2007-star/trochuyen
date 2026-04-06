@@ -26,7 +26,7 @@ header {
     padding: 40px 20px; /* Tăng padding lên xíu cho ảnh lộ ra nhiều hơn */
     
     /* --- CHÈN ẢNH NỀN VÀO ĐÂY --- */
-    background-image: url(https://i.pinimg.com/1200x/23/20/b3/2320b3e6fb349c0a85acfbbe2efd159b.jpg);
+    background-image: url(https://i.pinimg.com/1200x/08/27/cf/0827cfe7b88fe5436a47468e7336dcf4.jpg);
     background-size: cover;      /* Ép ảnh phủ kín toàn bộ khung header */
     background-position: center; /* Căn ảnh ra giữa để không bị mất góc đẹp */
     
@@ -36,15 +36,24 @@ header {
    SỬA TIÊU ĐỀ TRONG PHẦN BỐ CỤC CHUNG (BAN NGÀY)
 ========================================= */
 header h1 { 
-    font-family: 'Dancing Script', cursive; /* Áp dụng font viết tay */
-    font-size: 3.5rem; /* Phóng to lên cho hoành tráng */
-    color: #5bd856; 
+    font-family: 'Dancing Script', cursive; 
+    font-size: 3.8rem; 
     margin-bottom: 5px; 
-    letter-spacing: 2px; /* Khoảng cách chữ thưa ra cho sang */
+    letter-spacing: 2px; 
+    
+    /* MÀU HỒNG CAM SAN HÔ SÁNG */
+    color: #ff7675; 
+    
+    /* Phủ một lớp viền trắng siêu mỏng xung quanh chữ để tách biệt nó khỏi nền xanh */
+    text-shadow: -1px -1px 0 #fff, 
+                  1px -1px 0 #fff, 
+                 -1px  1px 0 #fff, 
+                  1px  1px 0 #fff,
+                  0px  5px 15px rgba(255, 118, 117, 0.3); /* Ánh sáng hồng nhạt tỏa ra */
 }
 
 header p { 
-    color: #888; 
+    color: #0e4247; 
     font-style: italic; 
     font-size: 1.1rem; /* Tăng size chữ phụ lên một chút */
     letter-spacing: 1px;
@@ -62,7 +71,7 @@ body.dark h1 {
 }
 
 body.dark header p {
-    color: #c4c6ca; /* Đổi màu chữ phụ sáng lên để không bị chìm vào nền đen */
+    color: #20f5d5; /* Đổi màu chữ phụ sáng lên để không bị chìm vào nền đen */
 }
 /* === 1. BẢNG CHỨA MẨU GIẤY (Chuyển sang dạng Cột Pinterest) === */
 /* === 1. BẢNG CHỨA MẨU GIẤY (Dạng Bảng tin 1 Cột) === */
