@@ -447,11 +447,11 @@ body.dark .note-time {
 .sidebar-left {
     /* Hiệu ứng mờ ảo (Lớp gradient trên cùng) + Ảnh nền mây Ghibli */
     background: linear-gradient(135deg, rgba(230,247,255,0.8), rgba(255,255,255,0.2)),
-                url('https://cellphones.com.vn/sforum/wp-content/uploads/2024/01/hinh-nen-hoa-tulip-6.jpg') no-repeat center center/cover;
+                url('https://s3.cloud.cmctelecom.vn/tinhte1/2018/03/4263042_1514330806547.jpg') no-repeat center center/cover;
 }
 .sidebar-right {
     background: linear-gradient(225deg, rgba(230,247,255,0.8), rgba(255,255,255,0.2)),
-                url('https://cellphones.com.vn/sforum/wp-content/uploads/2024/01/hinh-nen-hoa-tulip-6.jpg') no-repeat center center/cover;
+                url('https://s3.cloud.cmctelecom.vn/tinhte1/2018/03/4263042_1514330806547.jpg') no-repeat center center/cover;
 }
 
 /* --- DARK MODE: Lề bầu trời sao Ghibli --- */
