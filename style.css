@@ -468,3 +468,24 @@ body.dark .sidebar-right {
     .sidebar { display: none; } /* Tắt lề để nhường chỗ cho nội dung ghi chú */
     .main-content { max-width: 100%; }
 }
+/* === NỘI DUNG CHÍNH (Khu vực ở giữa chứa ghi chú) === */
+.main-content {
+    flex: 1;             /* Tự động giãn ra chiếm hết khoảng trống giữa 2 lề */
+    max-width: 800px;    /* Bóp hẹp chiều ngang lại cho mắt dễ đọc */
+    margin: 0 auto;      /* Ép nó đứng vào chính giữa màn hình */
+    min-height: 100vh;   /* Đảm bảo khung luôn dài chạm đáy màn hình */
+    
+    /* 🎨 CHỈNH MÀU/ẢNH NỀN Ở ĐÂY: */
+    /* Cách 1 - Dùng màu trơn (Ví dụ: #fffde7 là màu giấy ngả vàng cổ điển) */
+    background-color: #f0efd9; 
+    
+    /* Cách 2 - Nếu thích dùng ảnh thì XÓA dòng màu ở trên đi và dùng dòng này: */
+    /* background: url('LINK_ẢNH_CỦA_BẠN') no-repeat center center / cover; */
+    
+    transition: background 0.3s ease; /* Chuyển màu mượt mà khi bật/tắt Dark Mode */
+}
+
+/* Đảm bảo ban đêm nền chuyển sang màu tối bảo vệ mắt */
+body.dark .main-content {
+    background-color: #0a253f; 
+}
