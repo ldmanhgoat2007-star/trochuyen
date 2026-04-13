@@ -1,8 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp, deleteDoc, doc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-// === 1. CẤU HÌNH FIREBASE (Chỉ dùng Firestore) ===
+
+// === 1. CẤU HÌNH FIREBASE ===
 const firebaseConfig = {
-  // DÁN MÃ FIREBASE CONFIG CỦA BẠN VÀO ĐÂY
   apiKey : "AIzaSyCmH8xJhcCAodf_dnoIycvA-cgiAjlePq8" , 
   authDomain : "newcode-cee5d.firebaseapp.com" , 
   projectId : "newcode-cee5d" , 
@@ -15,9 +15,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// === 2. CẤU HÌNH IMGBB (Máy chủ lưu ảnh miễn phí) ===
+// === 2. CẤU HÌNH IMGBB ===
 const IMGBB_API_KEY = "ac4445a7e02ca6c699cfe22c91774617";
-
 
 // === 3. XỬ LÝ NGƯỜI DÙNG ===
 if (!localStorage.getItem('chat_user_name')) {
@@ -39,117 +38,116 @@ noteImageInput.addEventListener('change', (e) => {
     fileNameDisplay.textContent = file ? file.name : "";
 });
 
-// === 5. GỬI GHI CHÚ VÀ ẢNH ===
-// =========================================================
-// HÀM CHÍNH: XỬ LÝ KHI BẤM NÚT "GỬI GHI CHÚ"
-// =========================================================
-const noteForm = document.getElementById('note-form');
-const notesContainer = document.getElementById('notes-container');
+// === 5. GỬI GHI CHÚ (Tích hợp Firebase + Ảnh + Nhạc) ===
+noteForm.addEventListener('submit', async function(e) {
+    e.preventDefault(); 
 
-noteForm.addEventListener('submit', function(e) {
-    e.preventDefault(); // Chặn hành vi tải lại trang (Rất quan trọng)
-
-    // 1. Lấy dữ liệu từ các ô nhập liệu
-    const textInput = document.getElementById('note-content');
-    const text = textInput.value.trim();
-
-    const imageInput = document.getElementById('note-image');
-    const file = imageInput.files[0];
-
+    const text = noteContentInput.value.trim();
+    const file = noteImageInput.files[0];
     const musicInput = document.getElementById('music-link-input');
     const musicLink = musicInput ? musicInput.value.trim() : '';
 
-    // Nếu không nhập gì cả mà đòi gửi thì báo lỗi nhẹ
+    // Lấy màu nền được chọn (Giả sử bạn dùng radio button có name="color")
+    let selectedColor = "#e6ffcc"; // Màu mặc định
+    const colorOption = document.querySelector('input[name="color"]:checked');
+    if (colorOption) selectedColor = colorOption.value;
+
     if (!text && !file && !musicLink) {
         alert("Viết gì đó hoặc chèn ảnh/nhạc cho Bống đi chứ!");
         return;
     }
 
-    // 2. Chuyển link Spotify thành khung phát nhạc (Gọi hàm đã có sẵn)
-    const musicEmbedHTML = createSpotifyEmbed(musicLink);
+    // Hiệu ứng "Đang gửi"
+    const originalBtnText = submitBtn.innerText;
+    submitBtn.innerText = "Đang gửi...";
+    submitBtn.disabled = true;
 
-    // 3. Hàm nội bộ để tạo và in tờ giấy nhớ ra màn hình (Xử lý việc lắp ráp)
-    const renderNote = (imageHTML = '') => {
-        const newNote = document.createElement('div');
-        newNote.className = 'note';
-        
-        // (Lưu ý: Nếu bạn có code lấy màu nền (color-picker), hãy thêm logic màu vào newNote.style.backgroundColor ở đây)
+    try {
+        let imageUrl = null;
 
-        // Lắp ráp HTML cho tờ giấy nhớ: Chữ -> Ảnh -> Nhạc
-        newNote.innerHTML = `
-            ${text ? `<div class="note-content">${text}</div>` : ''}
-            ${imageHTML}
-            ${musicEmbedHTML}
-            <div class="note-meta">
-                <span class="note-sender">Mạnh</span>
-                <span class="note-time">Vừa xong</span>
-                <button class="delete-btn">Xóa</button>
-            </div>
-        `;
-
-        // Đẩy tờ giấy nhớ lên đầu danh sách
-        notesContainer.prepend(newNote);
-
-        // 4. DỌN DẸP SAU KHI GỬI XONG
-        textInput.value = '';
-        imageInput.value = '';
-        
-        const fileNameDisplay = document.getElementById('file-name-display');
-        if (fileNameDisplay) fileNameDisplay.innerText = '';
-        
-        if (musicInput) {
-            musicInput.value = '';
-            musicInput.classList.add('hidden'); // Giấu ô nhạc đi
+        // Xử lý upload ảnh qua ImgBB
+        if (file) {
+            const formData = new FormData();
+            formData.append("image", file);
+            const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                method: "POST",
+                body: formData
+            });
+            const data = await response.json();
+            if (data.success) {
+                imageUrl = data.data.url;
+            } else {
+                alert("Lỗi tải ảnh, vui lòng thử lại!");
+                submitBtn.innerText = originalBtnText;
+                submitBtn.disabled = false;
+                return;
+            }
         }
 
-        // Xóa dòng chữ "Đang tải..." hoặc "Chưa có ghi chú" nếu có
-        const loadingText = document.querySelector('.loading');
-        if (loadingText) loadingText.remove();
-    };
+        // Đẩy toàn bộ dữ liệu lên Firebase
+        await addDoc(collection(db, "notes"), {
+            content: text,
+            imageUrl: imageUrl,
+            musicLink: musicLink, // Lưu link nhạc gốc
+            sender: CURRENT_USER,
+            timestamp: serverTimestamp(),
+            likes: 0,
+            color: selectedColor
+        });
 
-    // 5. Logic xử lý ảnh (Bắt buộc dùng FileReader nếu có ảnh)
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const imageHTML = `<img src="${event.target.result}" class="note-image">`;
-            renderNote(imageHTML); // Có ảnh thì truyền ảnh vào rồi in ra
-        };
-        reader.readAsDataURL(file);
-    } else {
-        renderNote(); // Không có ảnh thì in ra luôn chữ và nhạc
+        // Dọn dẹp form sau khi gửi thành công
+        noteContentInput.value = '';
+        noteImageInput.value = '';
+        fileNameDisplay.textContent = '';
+        if (musicInput) {
+            musicInput.value = '';
+            musicInput.classList.add('hidden');
+        }
+
+    } catch (error) {
+        console.error("Lỗi khi gửi:", error);
+        alert("Có lỗi xảy ra khi gửi tin nhắn!");
+    } finally {
+        submitBtn.innerText = originalBtnText;
+        submitBtn.disabled = false;
     }
 });
+
 // === 6. ĐỌC VÀ XÓA DỮ LIỆU REAL-TIME ===
-// Hàm vẽ (render) một tờ giấy nhớ lên màn hình
 function renderNote(docSnapshot) {
     const data = docSnapshot.data();
-    const noteId = docSnapshot.id; // Lấy ID của ghi chú để phục vụ việc xóa
+    const noteId = docSnapshot.id; 
 
     const noteDiv = document.createElement('div');
     noteDiv.className = 'note';
-    
-    // Áp dụng màu nền (Nếu không có màu thì mặc định màu vàng)
     noteDiv.style.backgroundColor = data.color || "#e6ffcc"; 
 
-    // Xử lý thời gian
     let timeString = "...";
     if (data.timestamp) {
         const date = data.timestamp.toDate();
         timeString = date.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }) + ' ' + date.toLocaleDateString('vi-VN');
     }
 
-    // Nút xóa (Chỉ hiện nếu người đang xem chính là người gửi)
     let deleteBtnHtml = '';
     if (data.sender === CURRENT_USER) {
         deleteBtnHtml = `<button class="delete-btn" data-id="${noteId}">Xóa</button>`;
     }
 
-    let noteHtml = `<div class="note-content">${data.content}</div>`;
+    // Lắp ráp HTML
+    let noteHtml = '';
+    if (data.content) {
+        noteHtml += `<div class="note-content">${data.content}</div>`;
+    }
     if (data.imageUrl) {
         noteHtml += `<img src="${data.imageUrl}" alt="Ảnh ghi chú" class="note-image">`;
     }
     
-   noteHtml += `
+    // Nếu có link nhạc, biến nó thành khung Spotify
+    if (data.musicLink) {
+        noteHtml += createSpotifyEmbed(data.musicLink);
+    }
+    
+    noteHtml += `
         <div class="note-meta">
             <div style="display: flex; align-items: center; gap: 12px;">
                 <span class="note-sender">${data.sender}</span>
@@ -166,7 +164,6 @@ function renderNote(docSnapshot) {
     notesContainer.prepend(noteDiv);
 }
 
-// Hàm nghe thay đổi từ Firestore
 function listenToNotes() {
     const q = query(collection(db, "notes"), orderBy("timestamp", "asc"));
     onSnapshot(q, (snapshot) => {
@@ -175,23 +172,16 @@ function listenToNotes() {
             notesContainer.innerHTML = '<div class="loading">Bảng tin đang trống. Hãy viết điều gì đó!</div>';
             return;
         }
-        // Truyền toàn bộ doc (chứa cả ID và dữ liệu) vào hàm render
-        snapshot.forEach((doc) => {
-            renderNote(doc); 
-        });
+        snapshot.forEach((doc) => renderNote(doc)); 
     });
 }
 
-// Lắng nghe sự kiện click để Xóa (Áp dụng kỹ thuật Event Delegation)
+// Lắng nghe Xóa
 notesContainer.addEventListener('click', async (e) => {
-    // Nếu phần tử bị click có chứa class 'delete-btn'
     if (e.target.classList.contains('delete-btn')) {
         const noteId = e.target.getAttribute('data-id');
-        
-        // Hiển thị hộp thoại xác nhận
         if(confirm("Bạn có chắc chắn muốn xóa mẩu giấy nhớ này không?")) {
             try {
-                // Gọi lệnh xóa trên Firebase
                 await deleteDoc(doc(db, "notes", noteId));
             } catch (error) {
                 console.error("Lỗi khi xóa:", error);
@@ -201,121 +191,84 @@ notesContainer.addEventListener('click', async (e) => {
     }
 });
 
-// Bắt đầu nghe ngay khi trang web tải xong
 listenToNotes();
-// === LOGIC ẨN/HIỆN KHUNG VIẾT GHI CHÚ VỚI NÚT MŨI TÊN ===
+
+// === 7. CÁC TÍNH NĂNG GIAO DIỆN (Nút Mũi Tên, Dark Mode, Thả Tim) ===
 const toggleFormBtn = document.getElementById('toggle-form-btn');
 const noteFormContainer = document.getElementById('note-form'); 
 const arrowIcon = document.getElementById('arrow-icon');
 
 if (toggleFormBtn && noteFormContainer && arrowIcon) {
     toggleFormBtn.addEventListener('click', () => {
-        // Bật/tắt class hidden để ẩn/hiện form
         noteFormContainer.classList.toggle('hidden');
-        
-        // Cập nhật hướng mũi tên
         if (noteFormContainer.classList.contains('hidden')) {
-            // Khi ẩn: Mũi tên hướng Lên
             arrowIcon.classList.remove('arrow-down');
             arrowIcon.classList.add('arrow-up');
         } else {
-            // Khi hiện: Mũi tên hướng Xuống
             arrowIcon.classList.remove('arrow-up');
             arrowIcon.classList.add('arrow-down');
         }
     });
-} else {
-    console.error("Lỗi: Không tìm thấy nút mũi tên hoặc form trong HTML!");
 }
-// === LOGIC ĐỔI TÊN NGƯỜI DÙNG ===
-const changeNameBtn = document.getElementById('change-name-btn');
 
+const changeNameBtn = document.getElementById('change-name-btn');
 if (changeNameBtn) {
     changeNameBtn.addEventListener('click', () => {
         if(confirm("Bạn có muốn đổi tên khác không?")) {
-            // Xóa tên cũ trong bộ nhớ
             localStorage.removeItem('chat_user_name');
-            // Tải lại trang web (nó sẽ tự động hỏi lại tên mới)
             location.reload(); 
         }
     });
 }
-// === LOGIC DARK MODE ===
+
 const themeToggle = document.getElementById('theme-toggle'); 
-// (Mình đã đổi ID từ toggle-form-btn sang theme-toggle trong HTML mới)
 const bodyElement = document.body;
-// Giữ nguyên trạng thái Tối/Sáng nếu người dùng f5 lại trang
 if (localStorage.getItem('dark_mode') === 'true') {
     bodyElement.classList.add('dark');
-    themeToggle.textContent = '☀️';
+    if(themeToggle) themeToggle.textContent = '☀️';
+}
+if(themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        bodyElement.classList.toggle('dark');
+        const isDark = bodyElement.classList.contains('dark');
+        localStorage.setItem('dark_mode', isDark); 
+        themeToggle.textContent = isDark ? '☀️' : '🌙';
+    });
 }
 
-themeToggle.addEventListener('click', () => {
-    bodyElement.classList.toggle('dark');
-    const isDark = bodyElement.classList.contains('dark');
-    localStorage.setItem('dark_mode', isDark); // Lưu vào trí nhớ
-    themeToggle.textContent = isDark ? '☀️' : '🌙';
-});
-
-// === LOGIC BẮT SỰ KIỆN THẢ TIM ===
 notesContainer.addEventListener('click', async (e) => {
     const heartBtn = e.target.closest('.heart-btn');
     if (heartBtn) {
         const noteId = heartBtn.getAttribute('data-id');
         const noteRef = doc(db, "notes", noteId);
-        
-        // Gửi lệnh +1 lượt thích lên Firebase
-        await updateDoc(noteRef, {
-            likes: increment(1)
-        });
+        await updateDoc(noteRef, { likes: increment(1) });
 
-        // Tạo ra một trái tim nhỏ bay lơ lửng rồi biến mất
         const floatingHeart = document.createElement('div');
         floatingHeart.textContent = '💖';
         floatingHeart.className = 'floating-heart';
         heartBtn.appendChild(floatingHeart);
-        
-        // Tự động dọn rác HTML sau khi bay xong (tránh giật máy)
         setTimeout(() => floatingHeart.remove(), 800);
     }
 });
-// === HÀM BẬT/TẮT KHUNG NHẬP NHẠC ===
-// === LÍNH GÁC SỰ KIỆN CHO NÚT CHÈN NHẠC ===
-// Lệnh này đảm bảo toàn bộ trang web tải xong thì mới gắn sự kiện, chống lỗi 100%
+
+// === 8. LÍNH GÁC NÚT CHÈN NHẠC VÀ HÀM SPOTIFY ===
 document.addEventListener('DOMContentLoaded', function() {
-    
     const musicBtn = document.getElementById('music-toggle-btn');
     const musicInput = document.getElementById('music-link-input');
 
-    // Kiểm tra xem có tìm thấy nút và ô nhập trên màn hình không
     if (musicBtn && musicInput) {
-        // Gắn lính gác: Mỗi khi click vào nút thì chạy lệnh
         musicBtn.addEventListener('click', function() {
-            console.log("Bắt được lệnh click thành công!"); 
-            
-            // Bật/tắt ô nhập link
             musicInput.classList.toggle('hidden');
-            
-            // Nháy trỏ chuột vào ô nếu đang mở
             if (!musicInput.classList.contains('hidden')) {
                 musicInput.focus();
             }
         });
-    } else {
-        console.error("Báo động đỏ: Không tìm thấy ID music-toggle-btn hoặc music-link-input trong HTML.");
     }
 });
 
-// Hàm 2: Thần chú biến link Spotify thông thường thành khung phát nhạc
 function createSpotifyEmbed(url) {
-    // Nếu không có link thì bỏ qua
-    if (!url || !url.includes('spotify.com/track')) return ''; 
-
-    // Biến link gốc thành link dạng nhúng (embed)
-    // Ví dụ: spotify.com/track/123 -> spotify.com/embed/track/123
+    if (!url || !url.includes('spotify.com')) return ''; 
     const embedUrl = url.split('?')[0].replace('track/', 'embed/track/');
-    
-    // Trả về đoạn mã HTML chứa khung phát nhạc
     return `
         <iframe class="note-spotify-player" 
                 src="${embedUrl}?utm_source=generator&theme=0" 
