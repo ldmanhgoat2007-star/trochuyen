@@ -256,26 +256,31 @@ notesContainer.addEventListener('click', async (e) => {
     }
 });
 // === HÀM BẬT/TẮT KHUNG NHẬP NHẠC ===
-function toggleMusicInput() {
-    // Dòng này giúp bạn kiểm tra xem nút đã nhận lệnh chưa (Bấm F12 -> tab Console để xem)
-    console.log("Đã nhận lệnh bấm nút nhạc!"); 
-
-    const inputField = document.getElementById('music-link-input');
+// === LÍNH GÁC SỰ KIỆN CHO NÚT CHÈN NHẠC ===
+// Lệnh này đảm bảo toàn bộ trang web tải xong thì mới gắn sự kiện, chống lỗi 100%
+document.addEventListener('DOMContentLoaded', function() {
     
-    // Báo lỗi nếu HTML bị sai ID
-    if (!inputField) {
-        console.error("Báo động: Không tìm thấy ô dán link (music-link-input) trong HTML!");
-        return;
-    }
+    const musicBtn = document.getElementById('music-toggle-btn');
+    const musicInput = document.getElementById('music-link-input');
 
-    // Bật tắt class 'hidden'
-    inputField.classList.toggle('hidden');
-    
-    // Tự động nháy chuột vào ô nếu nó đang hiện
-    if (!inputField.classList.contains('hidden')) {
-        inputField.focus();
+    // Kiểm tra xem có tìm thấy nút và ô nhập trên màn hình không
+    if (musicBtn && musicInput) {
+        // Gắn lính gác: Mỗi khi click vào nút thì chạy lệnh
+        musicBtn.addEventListener('click', function() {
+            console.log("Bắt được lệnh click thành công!"); 
+            
+            // Bật/tắt ô nhập link
+            musicInput.classList.toggle('hidden');
+            
+            // Nháy trỏ chuột vào ô nếu đang mở
+            if (!musicInput.classList.contains('hidden')) {
+                musicInput.focus();
+            }
+        });
+    } else {
+        console.error("Báo động đỏ: Không tìm thấy ID music-toggle-btn hoặc music-link-input trong HTML.");
     }
-}
+});
 
 // Hàm 2: Thần chú biến link Spotify thông thường thành khung phát nhạc
 function createSpotifyEmbed(url) {
