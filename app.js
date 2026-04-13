@@ -255,3 +255,32 @@ notesContainer.addEventListener('click', async (e) => {
         setTimeout(() => floatingHeart.remove(), 800);
     }
 });
+// Hàm 1: Bật/tắt hiển thị ô dán link nhạc
+function toggleMusicInput() {
+    const inputField = document.getElementById('music-link-input');
+    inputField.classList.toggle('hidden');
+    if (!inputField.classList.contains('hidden')) {
+        inputField.focus(); // Tự động nháy chuột vào ô khi mở lên
+    }
+}
+
+// Hàm 2: Thần chú biến link Spotify thông thường thành khung phát nhạc
+function createSpotifyEmbed(url) {
+    // Nếu không có link thì bỏ qua
+    if (!url || !url.includes('spotify.com/track')) return ''; 
+
+    // Biến link gốc thành link dạng nhúng (embed)
+    // Ví dụ: spotify.com/track/123 -> spotify.com/embed/track/123
+    const embedUrl = url.split('?')[0].replace('track/', 'embed/track/');
+    
+    // Trả về đoạn mã HTML chứa khung phát nhạc
+    return `
+        <iframe class="note-spotify-player" 
+                src="${embedUrl}?utm_source=generator&theme=0" 
+                frameBorder="0" 
+                allowfullscreen="" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy">
+        </iframe>
+    `;
+}
