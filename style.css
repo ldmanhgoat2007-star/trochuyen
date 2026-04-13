@@ -520,7 +520,48 @@ body.dark .sidebar-right {
     
     transition: background 0.3s ease; /* Chuyển màu mượt mà khi bật/tắt Dark Mode */
 }
+/* === TÍNH NĂNG CHIA SẺ NHẠC === */
 
+/* Màu tím mộng mơ cho nút nhạc */
+.music-btn {
+    background-color: #a29bfe; 
+    transition: 0.3s;
+}
+.music-btn:hover {
+    background-color: #6c5ce7;
+}
+
+/* Kiểu dáng cho ô dán link */
+#music-link-input {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s;
+}
+#music-link-input:focus {
+    outline: none;
+    border-color: #a29bfe;
+    box-shadow: 0 0 8px rgba(162, 155, 254, 0.4);
+}
+
+/* Khung hiển thị Spotify trong tờ giấy nhớ */
+.note-spotify-player {
+    width: 100%;
+    height: 80px; /* Chiều cao chuẩn của thanh mini-player Spotify */
+    border-radius: 12px;
+    margin-top: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Giao diện ban đêm cho ô nhập link */
+body.dark #music-link-input {
+    background-color: #0d2f52;
+    color: #e4e6eb;
+    border-color: #1a3a5f;
+}
 /* Đảm bảo ban đêm nền chuyển sang màu tối bảo vệ mắt */
 body.dark .main-content {
     background-color: #0a253f; 
