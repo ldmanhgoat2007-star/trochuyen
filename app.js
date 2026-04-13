@@ -255,12 +255,25 @@ notesContainer.addEventListener('click', async (e) => {
         setTimeout(() => floatingHeart.remove(), 800);
     }
 });
-// Hàm 1: Bật/tắt hiển thị ô dán link nhạc
+// === HÀM BẬT/TẮT KHUNG NHẬP NHẠC ===
 function toggleMusicInput() {
+    // Dòng này giúp bạn kiểm tra xem nút đã nhận lệnh chưa (Bấm F12 -> tab Console để xem)
+    console.log("Đã nhận lệnh bấm nút nhạc!"); 
+
     const inputField = document.getElementById('music-link-input');
+    
+    // Báo lỗi nếu HTML bị sai ID
+    if (!inputField) {
+        console.error("Báo động: Không tìm thấy ô dán link (music-link-input) trong HTML!");
+        return;
+    }
+
+    // Bật tắt class 'hidden'
     inputField.classList.toggle('hidden');
+    
+    // Tự động nháy chuột vào ô nếu nó đang hiện
     if (!inputField.classList.contains('hidden')) {
-        inputField.focus(); // Tự động nháy chuột vào ô khi mở lên
+        inputField.focus();
     }
 }
 
