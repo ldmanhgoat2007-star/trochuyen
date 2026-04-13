@@ -40,61 +40,85 @@ noteImageInput.addEventListener('change', (e) => {
 });
 
 // === 5. GỬI GHI CHÚ VÀ ẢNH ===
-noteForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+// =========================================================
+// HÀM CHÍNH: XỬ LÝ KHI BẤM NÚT "GỬI GHI CHÚ"
+// =========================================================
+const noteForm = document.getElementById('note-form');
+const notesContainer = document.getElementById('notes-container');
 
-    const content = noteContentInput.value.trim();
-    const imageFile = noteImageInput.files[0];
+noteForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // Chặn hành vi tải lại trang (Rất quan trọng)
 
-    // LẤY MÀU ĐANG CHỌN (Dòng mới thêm)
-    const selectedColor = document.querySelector('input[name="note-color"]:checked').value;
+    // 1. Lấy dữ liệu từ các ô nhập liệu
+    const textInput = document.getElementById('note-content');
+    const text = textInput.value.trim();
 
-    if (!content && !imageFile) {
-        alert("Vui lòng nhập nội dung hoặc chọn ảnh.");
+    const imageInput = document.getElementById('note-image');
+    const file = imageInput.files[0];
+
+    const musicInput = document.getElementById('music-link-input');
+    const musicLink = musicInput ? musicInput.value.trim() : '';
+
+    // Nếu không nhập gì cả mà đòi gửi thì báo lỗi nhẹ
+    if (!text && !file && !musicLink) {
+        alert("Viết gì đó hoặc chèn ảnh/nhạc cho Bống đi chứ!");
         return;
     }
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Đang gửi...";
+    // 2. Chuyển link Spotify thành khung phát nhạc (Gọi hàm đã có sẵn)
+    const musicEmbedHTML = createSpotifyEmbed(musicLink);
 
-    try {
-        let imageUrl = null;
+    // 3. Hàm nội bộ để tạo và in tờ giấy nhớ ra màn hình (Xử lý việc lắp ráp)
+    const renderNote = (imageHTML = '') => {
+        const newNote = document.createElement('div');
+        newNote.className = 'note';
+        
+        // (Lưu ý: Nếu bạn có code lấy màu nền (color-picker), hãy thêm logic màu vào newNote.style.backgroundColor ở đây)
 
-        // Tải ảnh lên ImgBB (giữ nguyên đoạn này)
-        if (imageFile) {
-            const formData = new FormData();
-            formData.append("image", imageFile);
-            const imgbbResponse = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
-                method: "POST",
-                body: formData
-            });
-            const imgbbData = await imgbbResponse.json();
-            if (imgbbData.success) {
-                imageUrl = imgbbData.data.url;
-            }
+        // Lắp ráp HTML cho tờ giấy nhớ: Chữ -> Ảnh -> Nhạc
+        newNote.innerHTML = `
+            ${text ? `<div class="note-content">${text}</div>` : ''}
+            ${imageHTML}
+            ${musicEmbedHTML}
+            <div class="note-meta">
+                <span class="note-sender">Mạnh</span>
+                <span class="note-time">Vừa xong</span>
+                <button class="delete-btn">Xóa</button>
+            </div>
+        `;
+
+        // Đẩy tờ giấy nhớ lên đầu danh sách
+        notesContainer.prepend(newNote);
+
+        // 4. DỌN DẸP SAU KHI GỬI XONG
+        textInput.value = '';
+        imageInput.value = '';
+        
+        const fileNameDisplay = document.getElementById('file-name-display');
+        if (fileNameDisplay) fileNameDisplay.innerText = '';
+        
+        if (musicInput) {
+            musicInput.value = '';
+            musicInput.classList.add('hidden'); // Giấu ô nhạc đi
         }
 
-        // LƯU VÀO FIREBASE (Đã thêm trường color)
-        await addDoc(collection(db, "notes"), {
-            content: content,
-            imageUrl: imageUrl,
-            sender: CURRENT_USER,
-            timestamp: serverTimestamp(),
-            color: selectedColor // <--- Lưu màu vào đây
-        });
+        // Xóa dòng chữ "Đang tải..." hoặc "Chưa có ghi chú" nếu có
+        const loadingText = document.querySelector('.loading');
+        if (loadingText) loadingText.remove();
+    };
 
-        noteForm.reset();
-        fileNameDisplay.textContent = "";
-
-    } catch (error) {
-        console.error("Lỗi:", error);
-        alert("Có lỗi xảy ra khi gửi.");
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Gửi Ghi Chú";
+    // 5. Logic xử lý ảnh (Bắt buộc dùng FileReader nếu có ảnh)
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const imageHTML = `<img src="${event.target.result}" class="note-image">`;
+            renderNote(imageHTML); // Có ảnh thì truyền ảnh vào rồi in ra
+        };
+        reader.readAsDataURL(file);
+    } else {
+        renderNote(); // Không có ảnh thì in ra luôn chữ và nhạc
     }
 });
-
 // === 6. ĐỌC VÀ XÓA DỮ LIỆU REAL-TIME ===
 // Hàm vẽ (render) một tờ giấy nhớ lên màn hình
 function renderNote(docSnapshot) {
