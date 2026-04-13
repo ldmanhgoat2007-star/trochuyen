@@ -267,6 +267,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // === HÀM TẠO KHUNG PHÁT NHẠC THÔNG MINH (HỖ TRỢ SPOTIFY & SOUNDCLOUD) ===
+// === HÀM TẠO KHUNG PHÁT NHẠC (ĐÃ TỐI ƯU CHO MOBILE) ===
 function createMusicEmbed(url) {
     if (!url) return ''; 
 
@@ -280,26 +281,23 @@ function createMusicEmbed(url) {
                     allowfullscreen="" 
                     allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
                     loading="lazy"
-                    style="border-radius: 12px; width: 100%; height: 80px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    style="border-radius: 12px; width: 100%; height: 80px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; z-index: 50;">
             </iframe>
         `;
     }
 
     // 2. NẾU LÀ LINK SOUNDCLOUD
     if (url.includes('soundcloud.com')) {
-        // Biến link gốc thành định dạng an toàn cho web
         const encodedUrl = encodeURIComponent(url);
-        // Mã màu %23ff6b81 chính là màu hồng pastel của giao diện web bạn
         return `
             <iframe class="note-soundcloud-player" 
                     src="https://w.soundcloud.com/player/?url=${encodedUrl}&color=%23ff6b81&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&visual=false" 
                     frameBorder="0" 
-                    allow="autoplay"
-                    style="border-radius: 12px; width: 100%; height: 166px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    allow="autoplay; encrypted-media"
+                    style="border-radius: 12px; width: 100%; height: 166px; margin-top: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: relative; z-index: 50;">
             </iframe>
         `;
     }
 
-    // Nếu dán link linh tinh (không phải nhạc) thì bỏ qua
     return '';
 }
