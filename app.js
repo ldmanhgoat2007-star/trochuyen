@@ -41,41 +41,6 @@ noteImageInput.addEventListener('change', (e) => {
 
 // === 5. GỬI GHI CHÚ VÀ ẢNH ===
 noteForm.addEventListener('submit', async (e) => {
-   // ... (Các code cũ của bạn: lấy nội dung chữ, lấy ảnh...)
-
-// ==========================================
-// THÊM ĐOẠN NÀY ĐỂ XỬ LÝ NHẠC
-// ==========================================
-// Bước 1: Lấy cái link nhạc mà bạn vừa dán vào ô
-const musicInput = document.getElementById('music-link-input');
-const musicLink = musicInput.value;
-
-// Bước 2: Gọi "thần chú" biến link thành khung phát nhạc Spotify
-// (Nhớ đảm bảo bạn đã dán hàm createSpotifyEmbed ở tin nhắn trước vào file JS rồi nhé)
-const musicEmbedHTML = createSpotifyEmbed(musicLink); 
-// ==========================================
-
-// Bước 3: Ghép cái khung nhạc vào nội dung tờ giấy nhớ
-// Hãy tìm chỗ bạn đang tạo HTML cho tờ giấy nhớ (innerHTML) và gắn biến ${musicEmbedHTML} vào nhé.
-// Ví dụ cấu trúc của bạn sẽ trông na ná thế này:
-const newNote = document.createElement('div');
-newNote.className = 'note';
-newNote.innerHTML = `
-    <div class="note-content">${text}</div>
-    
-    ${musicEmbedHTML} <div class="note-meta">
-        <span class="note-sender">Mạnh</span>
-        <span class="note-time">Vừa xong</span>
-    </div>
-`;
-
-// ... (Code cũ của bạn: đưa tờ giấy nhớ lên màn hình)
-
-// Bước 4: Dọn dẹp! Gửi xong thì xóa trắng ô nhạc và ẩn nó đi cho gọn
-if (musicInput) {
-    musicInput.value = '';
-    musicInput.classList.add('hidden');
-}
     e.preventDefault();
 
     const content = noteContentInput.value.trim();
